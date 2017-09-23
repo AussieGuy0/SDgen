@@ -1,4 +1,5 @@
-# SDgen
+# SDgen [![Build Status](https://travis-ci.org/AussieGuy0/SDgen.svg?branch=master)](https://travis-ci.org/AussieGuy0/SDgen)
+
 A random data generator to produce realistic data files for multiple file types (e.g. csv, log, json)
 
 ## Installation
