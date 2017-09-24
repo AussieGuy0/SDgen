@@ -30,10 +30,10 @@ Where the Person class looks like this:
 ```java
 public class Person {
 
-   @Field(generator=NameGenerator.class) 
+   @Generator(NameGenerator.class) //Generator is used to create values
    private final String name; 
    
-   @Field(min=18, max=70)
+   @Range(min=18, max=70) //Range is used to limit the range of values
    private final int age;
    
    public Person(String name, int age) {
@@ -44,9 +44,12 @@ public class Person {
 }
 ```
 
+Annotations allow us to control how random values are generated. 
+Omitting Annotations would produce Strings like: `f9j)32`, and ints like: `-34093`
+
 `output.csv` would look something like this:
 
-```java
+```
 name, age
 Bob, 40
 Ashley, 22
@@ -62,8 +65,6 @@ new Gen()
     .addField("Age", new IntGenerator(18, 70)
     .asCsv(csvSettings)
     .toFile("output.csv");
-    
-    
 ```
 
 ## Acknowledgements
