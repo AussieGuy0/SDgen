@@ -1,11 +1,12 @@
 package au.com.anthonybruno;
 
+import au.com.anthonybruno.generator.IntGenerator;
 import au.com.anthonybruno.generator.StringGenerator;
 import au.com.anthonybruno.record.DefaultRecords;
 import au.com.anthonybruno.record.Record;
 import au.com.anthonybruno.record.Records;
 import au.com.anthonybruno.record.RowRecord;
-import au.com.anthonybruno.utils.ReflectionUtils;
+import au.com.anthonybruno.settings.CsvSettings;
 import com.univocity.parsers.csv.CsvWriter;
 import com.univocity.parsers.csv.CsvWriterSettings;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -14,7 +15,6 @@ import java.io.File;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Gen implements FileTypeDefinition, ResultDefinition {
@@ -32,6 +32,11 @@ public class Gen implements FileTypeDefinition, ResultDefinition {
 
     @Override
     public ResultDefinition asCsv() {
+        return asCsv(new CsvSettings(5));
+    }
+
+    @Override
+    public ResultDefinition asCsv(CsvSettings csvSettings) {
         return this;
     }
 
@@ -83,7 +88,7 @@ public class Gen implements FileTypeDefinition, ResultDefinition {
             value = new StringGenerator().generate();
 
         } else if (field.getType().equals(int.class)) {
-            value = 0;
+            value = new IntGenerator().generate();
         } else {
             throw new NotImplementedException();
         }
