@@ -6,9 +6,19 @@
   <artifactId>SdGen</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
+  <description>A random data generator to produce realistic files for multiple file types (e.g. csv, log, json)</description>
 
   <name>SdGen</name>
   <url>http://github.com/AussieGuy0/SDGen</url>
+
+  <issueManagement>
+    <system>Github Issues</system>
+    <url>https://github.com/AussieGuy0/SDgen/issues</url>
+  </issueManagement>
+
+  <scm>
+    <url>https://github.com/AussieGuy0/SDgen</url>
+  </scm>
 
   <developers>
     <developer>
@@ -17,6 +27,7 @@
         <role>Lead</role>
       </roles>
       <url>http://anthonybruno.com.au</url>
+      <email>anthony.bruno196@gmail.com</email>
     </developer>
   </developers>
 

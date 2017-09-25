@@ -21,7 +21,7 @@ to use an annotated plain old Java object like so:
 ```java
 CsvSettings csvSettings = new CsvSettings();
 csvSettings.setRows(2);
-new Gen().use(Person.class).asCsv(csvSettings).toFile("output.csv");
+Gen.create().use(Person.class).asCsv(csvSettings).toFile("output.csv");
 ```
 
 
@@ -60,7 +60,7 @@ Here is the same example using a fluent builder:
 ```java
 CsvSettings csvSettings = new CsvSettings();
 csvSettings.setRows(2);
-new Gen()
+Gen.create()
     .addField("Name", new NameGenerator())
     .addField("Age", new IntGenerator(18, 70)
     .asCsv(csvSettings)
