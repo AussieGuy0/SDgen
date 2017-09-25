@@ -1,9 +1,12 @@
-package au.com.anthonybruno.generator;
+package au.com.anthonybruno.generator.defaults;
+
+import au.com.anthonybruno.generator.Generator;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class StringGenerator implements Generator<String> {
 
+    private final CharGenerator charGenerator = new CharGenerator();
 
     @Override
     public String generate() {
@@ -11,7 +14,7 @@ public class StringGenerator implements Generator<String> {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         int length = random.nextInt(1, 10);
         for (int i = 0; i < length; i++) {
-           stringBuilder.append((char) random.nextInt(48,122));
+           stringBuilder.append(charGenerator.generate());
         }
         return stringBuilder.toString();
     }
