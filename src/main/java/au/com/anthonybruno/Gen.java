@@ -1,42 +1,43 @@
 package au.com.anthonybruno;
 
-import au.com.anthonybruno.generator.IntGenerator;
-import au.com.anthonybruno.generator.StringGenerator;
-import au.com.anthonybruno.record.DefaultRecords;
-import au.com.anthonybruno.record.Record;
-import au.com.anthonybruno.record.Records;
-import au.com.anthonybruno.record.RowRecord;
+import au.com.anthonybruno.creator.CsvFactory;
+import au.com.anthonybruno.creator.FileFactory;
+import au.com.anthonybruno.creator.FixedWidthFactory;
 import au.com.anthonybruno.settings.CsvSettings;
-import com.univocity.parsers.csv.CsvWriter;
-import com.univocity.parsers.csv.CsvWriterSettings;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import au.com.anthonybruno.settings.FixedWidthSettings;
 
 import java.io.File;
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Gen implements FileTypeDefinition, ResultDefinition {
 
+    private static final int defaultRowsToGenerate = 5;
+
     private Class<?> useClass;
+    private FileFactory fileFactory;
 
     public Gen() {
 
     }
 
-    public Gen use(Class<?> c) {
+    public FileTypeDefinition use(Class<?> c) {
         useClass = c;
         return this;
     }
 
     @Override
     public ResultDefinition asCsv() {
-        return asCsv(new CsvSettings(5));
+        return asCsv(new CsvSettings(defaultRowsToGenerate));
     }
 
     @Override
     public ResultDefinition asCsv(CsvSettings csvSettings) {
+        fileFactory = new CsvFactory(csvSettings, useClass);
+        return this;
+    }
+
+    @Override
+    public ResultDefinition asFixedWidth(FixedWidthSettings fixedWidthSettings) {
+        fileFactory = new FixedWidthFactory(fixedWidthSettings, useClass);
         return this;
     }
 
@@ -47,51 +48,19 @@ public class Gen implements FileTypeDefinition, ResultDefinition {
 
     @Override
     public String toString() {
-        Records records = generateRecords(useClass, 5);
-
-        StringWriter stringWriter = new StringWriter();
-        CsvWriter csvWriter = new CsvWriter(stringWriter, new CsvWriterSettings()); //TODO: Move elsewhere
-        records.forEach(record -> {
-            record.forEach(csvWriter::addValue);
-            csvWriter.writeValuesToRow();
-        });
-        return stringWriter.toString();
+        checkSetup();
+        return fileFactory.getAsString();
     }
 
-    private Records generateRecords(Class<?> c, int numOfRecords) {
-        Field[] fields = c.getDeclaredFields();
-        List<String> fieldNames = new ArrayList<>();
-        for (Field field : fields) {
-           fieldNames.add(field.getName());
+    private void checkSetup() {
+        if (useClass == null) {
+            throw new IllegalStateException("No generation class specified! Please utilise the #use(Class c) method!");
         }
 
-        List<Record> records = new ArrayList<>();
-        for (int i = 0; i < numOfRecords; i++) {
-            records.add(generateRecord(fields));
-
+        if (fileFactory == null) {
+            throw new IllegalStateException("No file type specified! Use one of the 'as' methods such as #asCsv()");
         }
-
-        return new DefaultRecords(fieldNames, records);
     }
 
-    private Record generateRecord(Field[] fields) {
-        List<Object> list = new ArrayList<>();
-        for (Field field : fields) {
-            list.add(generateValue(field));
-        }
-        return new RowRecord(list);
-    }
 
-    private Object generateValue(Field field) {
-        Object value;
-        if (field.getType().equals(String.class)) {
-            value = new StringGenerator().generate();
-
-        } else if (field.getType().equals(int.class)) {
-            value = new IntGenerator().generate();
-        } else {
-            throw new NotImplementedException();
-        }
-        return value;
-    }
 }
