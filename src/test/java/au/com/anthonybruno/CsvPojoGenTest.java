@@ -80,7 +80,7 @@ public class CsvPojoGenTest {
 
 
     private String generatePersonCsv() {
-       return new Gen().use(Person.class).asCsv(new CsvSettings(5)).toString();
+       return Gen.create().use(Person.class).asCsv(new CsvSettings(5)).toString();
     }
 
     private int countOccurrences(String haystack, String needle) {

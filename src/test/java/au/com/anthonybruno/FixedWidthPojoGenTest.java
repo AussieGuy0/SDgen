@@ -27,7 +27,6 @@ public class FixedWidthPojoGenTest {
     @Test
     public void isFixedWidth() {
         String result = generatePersonFixedWidth();
-        System.out.println(result);
 
         FixedWidthParserSettings settings = new FixedWidthParserSettings(fixedWidthFields);
         FixedWidthParser fixedWidthParser = new FixedWidthParser(settings);
@@ -38,6 +37,6 @@ public class FixedWidthPojoGenTest {
 
 
     private String generatePersonFixedWidth() {
-        return new Gen().use(Person.class).asFixedWidth(new FixedWidthSettings(rows, fixedWidthFields)).toString();
+        return Gen.create().use(Person.class).asFixedWidth(new FixedWidthSettings(rows, fixedWidthFields)).toString();
     }
 }

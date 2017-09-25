@@ -3,25 +3,38 @@ package au.com.anthonybruno;
 import au.com.anthonybruno.creator.CsvFactory;
 import au.com.anthonybruno.creator.FileFactory;
 import au.com.anthonybruno.creator.FixedWidthFactory;
+import au.com.anthonybruno.generator.Generator;
 import au.com.anthonybruno.settings.CsvSettings;
 import au.com.anthonybruno.settings.FixedWidthSettings;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 
-public class Gen implements FileTypeDefinition, ResultDefinition {
+public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinition {
 
     private static final int defaultRowsToGenerate = 5;
 
     private Class<?> useClass;
     private FileFactory fileFactory;
 
-    public Gen() {
+    public static FieldDefinition create() {
+        return new Gen();
+    }
+
+    private Gen() {
 
     }
 
+
+    @Override
     public FileTypeDefinition use(Class<?> c) {
         useClass = c;
         return this;
+    }
+
+    @Override
+    public FileTypeDefinition addField(String name, Generator generator) {
+        throw new NotImplementedException();
     }
 
     @Override
