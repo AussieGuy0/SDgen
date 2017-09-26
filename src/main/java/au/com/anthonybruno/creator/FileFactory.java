@@ -1,10 +1,10 @@
 package au.com.anthonybruno.creator;
 
-import au.com.anthonybruno.record.Records;
+import java.io.File;
 
 public interface FileFactory {
 
-    Records generateRecords(Class<?> toUse, int numToGenerate);
+    String buildString();
 
-    String getAsString();
+    File buildFile(File file);
 }

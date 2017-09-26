@@ -1,8 +1,11 @@
 package au.com.anthonybruno;
 
 import au.com.anthonybruno.settings.CsvSettings;
+import au.com.anthonybruno.utils.ReadFile;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -78,9 +81,30 @@ public class CsvPojoGenTest {
         assertNotEquals("Values generated were not random ", 1, values.size());
     }
 
+    @Test
+    public void createFile() {
+        File file = generatePersonCsvFile();
+        assertNotNull(file);
+        ReadFile readFile = new ReadFile(file);
+
+        assertTrue(!readFile.getText().isEmpty());
+
+    }
+
 
     private String generatePersonCsv() {
        return Gen.create().use(Person.class).asCsv(new CsvSettings(5)).toString();
+    }
+
+    private File generatePersonCsvFile() {
+        File file;
+        try {
+            file = File.createTempFile("test", ".csv");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        file.deleteOnExit();
+        return Gen.create().use(Person.class).asCsv(new CsvSettings(5)).toFile(file);
     }
 
     private int countOccurrences(String haystack, String needle) {

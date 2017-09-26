@@ -55,14 +55,14 @@ public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinitio
     }
 
     @Override
-    public File toFile(String filepath) {
-        return null;
+    public File toFile(File file) {
+        return fileFactory.buildFile(file);
     }
 
     @Override
     public String toString() {
         checkSetup();
-        return fileFactory.getAsString();
+        return fileFactory.buildString();
     }
 
     private void checkSetup() {

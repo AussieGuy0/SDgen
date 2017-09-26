@@ -5,6 +5,7 @@ import au.com.anthonybruno.settings.FixedWidthSettings;
 import com.univocity.parsers.fixed.FixedWidthWriter;
 import com.univocity.parsers.fixed.FixedWidthWriterSettings;
 
+import java.io.File;
 import java.io.StringWriter;
 
 public class FixedWidthFactory extends FlatFileFactory<FixedWidthSettings> {
@@ -17,16 +18,29 @@ public class FixedWidthFactory extends FlatFileFactory<FixedWidthSettings> {
     }
 
     @Override
-    public String getAsString() {
-        Records records = generateRecords(useClass, settings.getRows());
-
-        StringWriter stringWriter = new StringWriter();
+    public String buildString() {
         FixedWidthWriterSettings writerSettings = new FixedWidthWriterSettings(settings.getFixedWidthFields());
+        StringWriter stringWriter = new StringWriter();
         FixedWidthWriter fixedWidthWriter = new FixedWidthWriter(stringWriter, writerSettings);
-        records.forEach(record -> {
-            record.forEach(fixedWidthWriter::addValue);
-            fixedWidthWriter.writeValuesToRow();
-        });
+
+        writeValues(fixedWidthWriter);
         return stringWriter.toString();
+    }
+
+    private void writeValues(FixedWidthWriter writer) {
+        Records records = generateRecords(useClass);
+        records.forEach(record -> {
+            record.forEach(writer::addValue);
+            writer.writeValuesToRow();
+        });
+    }
+
+    @Override
+    public File buildFile(File file) {
+        FixedWidthWriterSettings writerSettings = new FixedWidthWriterSettings(settings.getFixedWidthFields());
+        FixedWidthWriter fixedWidthWriter = new FixedWidthWriter(file, writerSettings);
+
+        writeValues(fixedWidthWriter);
+        return file;
     }
 }

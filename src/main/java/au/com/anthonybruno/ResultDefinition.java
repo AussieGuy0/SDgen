@@ -4,7 +4,7 @@ import java.io.File;
 
 public interface ResultDefinition {
 
-    File toFile(String filepath);
+    File toFile(File file);
 
     String toString();
 }
