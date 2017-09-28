@@ -1,18 +1,23 @@
 package au.com.anthonybruno.creator;
 
-import au.com.anthonybruno.record.ClassRecordFactory;
-import au.com.anthonybruno.record.Records;
-import au.com.anthonybruno.settings.Settings;
+import au.com.anthonybruno.record.factory.RecordFactory;
+import au.com.anthonybruno.settings.FlatFileSettings;
 
-public abstract class FlatFileFactory<T extends Settings> implements FileFactory  {
+public abstract class FlatFileFactory<T extends FlatFileSettings> implements FileFactory  {
 
     protected final T settings;
+    protected final RecordFactory recordFactory;
 
-    public FlatFileFactory(T settings) {
+    public FlatFileFactory(T settings, RecordFactory recordFactory) {
+        if (settings == null) {
+            throw new IllegalArgumentException("Settings cannot be null!");
+        }
+
+        if (recordFactory == null) {
+            throw new IllegalArgumentException("recordFactory cannot be null!");
+        }
         this.settings = settings;
+        this.recordFactory = recordFactory;
     }
 
-    protected Records generateRecords(Class<?> useClass, int numToGenerate) {
-        return new ClassRecordFactory(useClass).generateRecords(numToGenerate);
-    }
 }

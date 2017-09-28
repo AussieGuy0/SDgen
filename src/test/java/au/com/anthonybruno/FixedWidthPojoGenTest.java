@@ -6,6 +6,8 @@ import com.univocity.parsers.fixed.FixedWidthParser;
 import com.univocity.parsers.fixed.FixedWidthParserSettings;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
@@ -35,12 +37,39 @@ public class FixedWidthPojoGenTest {
         assertEquals(5, parsedResult.size());
     }
 
+    @Test
+    public void fixedWidthFile() {
+        File file = generateFixedWidthFile();
+
+        FixedWidthParserSettings settings = new FixedWidthParserSettings(fixedWidthFields);
+        FixedWidthParser fixedWidthParser = new FixedWidthParser(settings);
+
+        List<String[]> parsedResult = fixedWidthParser.parseAll(file);
+        assertEquals(5, parsedResult.size());
+
+    }
+
 
     private String generatePersonFixedWidth() {
         return Gen.start()
                 .use(Person.class)
-                .asFixedWidth(new FixedWidthSettings(fixedWidthFields))
                 .generate(rows)
+                .asFixedWidth(new FixedWidthSettings(false, fixedWidthFields))
                 .toStringForm();
+    }
+
+    private File generateFixedWidthFile() {
+        File file;
+        try {
+            file = File.createTempFile("tst", ".txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        file.deleteOnExit();
+        return Gen.start()
+                .use(Person.class)
+                .generate(rows)
+                .asFixedWidth(new FixedWidthSettings(false, fixedWidthFields))
+                .toFile(file);
     }
 }

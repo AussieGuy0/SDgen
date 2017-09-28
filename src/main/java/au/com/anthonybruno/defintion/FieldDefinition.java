@@ -4,7 +4,7 @@ import au.com.anthonybruno.generator.Generator;
 
 public interface FieldDefinition {
 
-    FileTypeDefinition use(Class<?> c);
+    RecordDefinition use(Class<?> c);
 
-    FileTypeDefinition addField(String name, Generator generator);
+    RecordDefinition addField(String name, Generator generator);
 }

@@ -5,9 +5,9 @@ import au.com.anthonybruno.settings.FixedWidthSettings;
 
 public interface FileTypeDefinition {
 
-    RecordDefinition asCsv();
+    ResultDefinition asCsv();
 
-    RecordDefinition asCsv(CsvSettings settings);
+    ResultDefinition asCsv(CsvSettings settings);
 
-    RecordDefinition asFixedWidth(FixedWidthSettings fixedWidthSettings);
+    ResultDefinition asFixedWidth(FixedWidthSettings fixedWidthSettings);
 }

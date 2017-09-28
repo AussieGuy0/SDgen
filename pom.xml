@@ -6,10 +6,17 @@
   <artifactId>SdGen</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <description>A random data generator to produce realistic files for multiple file types (e.g. csv, log, json)</description>
 
   <name>SdGen</name>
+  <description>A random data generator to produce realistic files for multiple file types (e.g. csv, log, json)</description>
   <url>http://github.com/AussieGuy0/SDGen</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+        <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
 
   <issueManagement>
     <system>Github Issues</system>
@@ -17,7 +24,9 @@
   </issueManagement>
 
   <scm>
-    <url>https://github.com/AussieGuy0/SDgen</url>
+    <connection>scm:git:git://github.com/AussieGuy0/SDgen.git</connection>
+    <developerConnection>scm:git:ssh://github.com:AussieGuy0/SDgen.git</developerConnection>
+    <url>https://github.com/AussieGuy0/SDgen/tree/master</url>
   </scm>
 
   <developers>

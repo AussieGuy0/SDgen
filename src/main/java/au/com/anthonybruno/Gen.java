@@ -3,24 +3,25 @@ package au.com.anthonybruno;
 import au.com.anthonybruno.creator.CsvFactory;
 import au.com.anthonybruno.creator.FileFactory;
 import au.com.anthonybruno.creator.FixedWidthFactory;
-import au.com.anthonybruno.defintion.FieldDefinition;
-import au.com.anthonybruno.defintion.FileTypeDefinition;
-import au.com.anthonybruno.defintion.RecordDefinition;
-import au.com.anthonybruno.defintion.ResultDefinition;
+import au.com.anthonybruno.defintion.*;
 import au.com.anthonybruno.generator.Generator;
+import au.com.anthonybruno.record.factory.ClassRecordFactory;
+import au.com.anthonybruno.record.factory.FieldsRecordFactory;
+import au.com.anthonybruno.record.factory.RecordFactory;
 import au.com.anthonybruno.settings.CsvSettings;
 import au.com.anthonybruno.settings.FixedWidthSettings;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinition, RecordDefinition {
 
-    private static final int defaultRowsToGenerate = 5;
-
-    private Class<?> useClass;
     private int numToGenerate;
     private FileFactory fileFactory;
+
+    private Class<?> useClass;
+    private List<FieldData> fields = new ArrayList<>();
 
     public static FieldDefinition start() {
         return new Gen();
@@ -32,30 +33,31 @@ public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinitio
 
 
     @Override
-    public FileTypeDefinition use(Class<?> c) {
+    public RecordDefinition use(Class<?> c) {
         useClass = c;
         return this;
     }
 
     @Override
-    public FileTypeDefinition addField(String name, Generator generator) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public RecordDefinition asCsv() {
-        return asCsv(new CsvSettings());
-    }
-
-    @Override
-    public RecordDefinition asCsv(CsvSettings csvSettings) {
-        fileFactory = new CsvFactory(csvSettings, useClass);
+    public RecordDefinition addField(String name, Generator generator) {
+        fields.add(new FieldData(name, generator));
         return this;
     }
 
     @Override
-    public RecordDefinition asFixedWidth(FixedWidthSettings fixedWidthSettings) {
-        fileFactory = new FixedWidthFactory(fixedWidthSettings, useClass);
+    public ResultDefinition asCsv() {
+        return asCsv(new CsvSettings(true));
+    }
+
+    @Override
+    public ResultDefinition asCsv(CsvSettings csvSettings) {
+        fileFactory = new CsvFactory(csvSettings, createRecordFactory());
+        return this;
+    }
+
+    @Override
+    public ResultDefinition asFixedWidth(FixedWidthSettings fixedWidthSettings) {
+        fileFactory = new FixedWidthFactory(fixedWidthSettings, createRecordFactory());
         return this;
     }
 
@@ -70,20 +72,35 @@ public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinitio
         return fileFactory.createString(numToGenerate);
     }
 
+    @Override
+    public FileTypeDefinition generate(int num) {
+        this.numToGenerate = num;
+        return this;
+    }
+
+    private RecordFactory createRecordFactory() {
+        if (useClass != null) {
+            return new ClassRecordFactory(useClass);
+        } else if (!fields.isEmpty()){
+            return new FieldsRecordFactory(fields);
+        } else {
+            throw new IllegalStateException("No fields or class added to generator");
+        }
+    }
+
     private void checkSetup() {
-        if (useClass == null) {
-            throw new IllegalStateException("No generation class specified! Please utilise the #use(Class c) method!");
+        if (useClass == null && fields.isEmpty()) {
+            throw new IllegalStateException("No generation fields or class specified! Please utilise the #use or #addField methods!");
         }
 
         if (fileFactory == null) {
             throw new IllegalStateException("No file type specified! Use one of the 'as' methods such as #asCsv()");
         }
+
+        if (numToGenerate <= 0) {
+            throw new IllegalStateException("Need to specify a positive non-zero number of records to generate!");
+        }
     }
 
 
-    @Override
-    public ResultDefinition generate(int num) {
-        this.numToGenerate = num;
-        return this;
-    }
 }

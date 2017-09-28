@@ -1,6 +1,7 @@
 package au.com.anthonybruno.creator;
 
 import au.com.anthonybruno.record.Records;
+import au.com.anthonybruno.record.factory.RecordFactory;
 import au.com.anthonybruno.settings.FixedWidthSettings;
 import com.univocity.parsers.fixed.FixedWidthWriter;
 import com.univocity.parsers.fixed.FixedWidthWriterSettings;
@@ -10,11 +11,8 @@ import java.io.StringWriter;
 
 public class FixedWidthFactory extends FlatFileFactory<FixedWidthSettings> {
 
-    private final Class<?> useClass;
-
-    public FixedWidthFactory(FixedWidthSettings settings, Class<?> c) {
-        super(settings);
-        this.useClass = c;
+    public FixedWidthFactory(FixedWidthSettings settings, RecordFactory recordFactory) {
+        super(settings, recordFactory);
     }
 
     @Override
@@ -29,11 +27,16 @@ public class FixedWidthFactory extends FlatFileFactory<FixedWidthSettings> {
 
 
     private void writeValues(FixedWidthWriter writer, int numToGenerate) {
-        Records records = generateRecords(useClass, numToGenerate);
+        Records records = recordFactory.generateRecords(numToGenerate);
+        if (settings.isIncludingHeaders()) {
+            records.getFields().forEach(writer::addValue);
+            writer.writeValuesToRow();
+        }
         records.forEach(record -> {
             record.forEach(writer::addValue);
             writer.writeValuesToRow();
         });
+        writer.close();
     }
 
     @Override

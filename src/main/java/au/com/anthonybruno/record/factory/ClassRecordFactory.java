@@ -1,6 +1,10 @@
-package au.com.anthonybruno.record;
+package au.com.anthonybruno.record.factory;
 
 import au.com.anthonybruno.generator.GeneratedValue;
+import au.com.anthonybruno.record.DefaultRecords;
+import au.com.anthonybruno.record.Record;
+import au.com.anthonybruno.record.Records;
+import au.com.anthonybruno.record.RowRecord;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

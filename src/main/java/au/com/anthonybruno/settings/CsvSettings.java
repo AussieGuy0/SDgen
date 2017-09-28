@@ -1,7 +1,8 @@
 package au.com.anthonybruno.settings;
 
-public class CsvSettings extends Settings {
+public class CsvSettings extends FlatFileSettings {
 
-    public CsvSettings() {
+    public CsvSettings(boolean includeHeaders) {
+        super(includeHeaders);
     }
 }

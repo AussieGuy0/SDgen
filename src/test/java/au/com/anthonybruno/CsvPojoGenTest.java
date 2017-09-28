@@ -82,18 +82,30 @@ public class CsvPojoGenTest {
     }
 
     @Test
+    public void containsHeaders() {
+        String result = generatePersonCsvWithHeaders();
+        String[] headerRows = result.split("\n")[0].split(",");
+        assertEquals("name", headerRows[0]);
+        assertEquals("age", headerRows[1]);
+    }
+
+    @Test
     public void createFile() {
         File file = generatePersonCsvFile();
         assertNotNull(file);
         ReadFile readFile = new ReadFile(file);
 
         assertTrue(!readFile.getText().isEmpty());
-
     }
 
 
+
     private String generatePersonCsv() {
-       return Gen.start().use(Person.class).asCsv(new CsvSettings()).generate(5).toStringForm();
+       return Gen.start().use(Person.class).generate(5).asCsv(new CsvSettings(false)).toStringForm();
+    }
+
+    private String generatePersonCsvWithHeaders() {
+        return Gen.start().use(Person.class).generate(5).asCsv(new CsvSettings(true)).toStringForm();
     }
 
     private File generatePersonCsvFile() {
@@ -104,7 +116,7 @@ public class CsvPojoGenTest {
             throw new RuntimeException(e);
         }
         file.deleteOnExit();
-        return Gen.start().use(Person.class).asCsv().generate(5).toFile(file);
+        return Gen.start().use(Person.class).generate(5).asCsv(new CsvSettings(false)).toFile(file);
     }
 
     private int countOccurrences(String haystack, String needle) {
