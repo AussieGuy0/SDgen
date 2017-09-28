@@ -19,9 +19,11 @@ There are two main ways to use SDGen to generate random data. The first way is
 to use an annotated plain old Java object like so:
 
 ```java
-CsvSettings csvSettings = new CsvSettings();
-csvSettings.setRows(2);
-Gen.create().use(Person.class).asCsv(csvSettings).toFile("output.csv");
+Gen.create()
+    .use(Person.class)
+    .generate(2) //Number of rows that will be generated
+    .asCsv(csvSettings)
+    .toFile("output.csv");
 ```
 
 
@@ -58,13 +60,26 @@ Ashley, 22
 Here is the same example using a fluent builder:
 
 ```java
-CsvSettings csvSettings = new CsvSettings();
-csvSettings.setRows(2);
 Gen.create()
     .addField("Name", new NameGenerator())
     .addField("Age", new IntGenerator(18, 70)
+    .generate(2) //number of rows to generate
     .asCsv(csvSettings)
     .toFile("output.csv");
 ```
+
+### Generator
+Generators are simple classes that generate random data.
+
+```java
+@FunctionalInterface
+public interface Generator<T> {
+
+    T generate();
+    
+}
+```
+
+SDgen provides basic generators for all primitive data types. 
 
 ## Acknowledgements
