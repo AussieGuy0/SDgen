@@ -1,4 +1,4 @@
-package au.com.anthonybruno;
+package au.com.anthonybruno.defintion;
 
 import au.com.anthonybruno.generator.Generator;
 

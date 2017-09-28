@@ -18,15 +18,15 @@ public class CsvFactory extends FlatFileFactory<CsvSettings> {
     }
 
     @Override
-    public String buildString() {
+    public String createString(int rowsToGenerate) {
         StringWriter stringWriter = new StringWriter();
         CsvWriter csvWriter = new CsvWriter(stringWriter, new CsvWriterSettings());
-        writeValues(csvWriter);
+        writeValues(csvWriter, rowsToGenerate);
         return stringWriter.toString();
     }
 
-    private void writeValues(CsvWriter writer) {
-        Records records = generateRecords(useClass);
+    private void writeValues(CsvWriter writer, int rowsToGenerate) {
+        Records records = generateRecords(useClass, rowsToGenerate);
         records.forEach(record -> {
             record.forEach(writer::addValue);
             writer.writeValuesToRow();
@@ -35,9 +35,9 @@ public class CsvFactory extends FlatFileFactory<CsvSettings> {
     }
 
     @Override
-    public File buildFile(File file) {
+    public File createFile(File file, int rowsToGenerate) {
         CsvWriter csvWriter = new CsvWriter(file, new CsvWriterSettings());
-        writeValues(csvWriter);
+        writeValues(csvWriter, rowsToGenerate);
         return file;
     }
 }

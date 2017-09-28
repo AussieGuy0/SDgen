@@ -1,4 +1,4 @@
-package au.com.anthonybruno;
+package au.com.anthonybruno.defintion;
 
 import java.io.File;
 
@@ -6,5 +6,5 @@ public interface ResultDefinition {
 
     File toFile(File file);
 
-    String toString();
+    String toStringForm();
 }

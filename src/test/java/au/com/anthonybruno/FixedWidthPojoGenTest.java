@@ -37,6 +37,10 @@ public class FixedWidthPojoGenTest {
 
 
     private String generatePersonFixedWidth() {
-        return Gen.create().use(Person.class).asFixedWidth(new FixedWidthSettings(rows, fixedWidthFields)).toString();
+        return Gen.start()
+                .use(Person.class)
+                .asFixedWidth(new FixedWidthSettings(fixedWidthFields))
+                .generate(rows)
+                .toStringForm();
     }
 }

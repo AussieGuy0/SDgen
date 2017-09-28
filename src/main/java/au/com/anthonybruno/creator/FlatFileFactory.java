@@ -12,7 +12,7 @@ public abstract class FlatFileFactory<T extends Settings> implements FileFactory
         this.settings = settings;
     }
 
-    protected Records generateRecords(Class<?> useClass) {
-        return new ClassRecordFactory(useClass).generateRecords(settings.getRows());
+    protected Records generateRecords(Class<?> useClass, int numToGenerate) {
+        return new ClassRecordFactory(useClass).generateRecords(numToGenerate);
     }
 }

@@ -6,8 +6,7 @@ public class FixedWidthSettings extends Settings {
 
     private final FixedWidthFields fixedWidthFields;
 
-    public FixedWidthSettings(int rows, FixedWidthFields fields) {
-        super(rows);
+    public FixedWidthSettings(FixedWidthFields fields) {
         this.fixedWidthFields = fields;
     }
 

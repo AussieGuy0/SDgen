@@ -93,7 +93,7 @@ public class CsvPojoGenTest {
 
 
     private String generatePersonCsv() {
-       return Gen.create().use(Person.class).asCsv(new CsvSettings(5)).toString();
+       return Gen.start().use(Person.class).asCsv(new CsvSettings()).generate(5).toStringForm();
     }
 
     private File generatePersonCsvFile() {
@@ -104,7 +104,7 @@ public class CsvPojoGenTest {
             throw new RuntimeException(e);
         }
         file.deleteOnExit();
-        return Gen.create().use(Person.class).asCsv(new CsvSettings(5)).toFile(file);
+        return Gen.start().use(Person.class).asCsv().generate(5).toFile(file);
     }
 
     private int countOccurrences(String haystack, String needle) {

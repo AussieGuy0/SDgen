@@ -18,17 +18,18 @@ public class FixedWidthFactory extends FlatFileFactory<FixedWidthSettings> {
     }
 
     @Override
-    public String buildString() {
+    public String createString(int numToGenerate) {
         FixedWidthWriterSettings writerSettings = new FixedWidthWriterSettings(settings.getFixedWidthFields());
         StringWriter stringWriter = new StringWriter();
         FixedWidthWriter fixedWidthWriter = new FixedWidthWriter(stringWriter, writerSettings);
 
-        writeValues(fixedWidthWriter);
+        writeValues(fixedWidthWriter, numToGenerate);
         return stringWriter.toString();
     }
 
-    private void writeValues(FixedWidthWriter writer) {
-        Records records = generateRecords(useClass);
+
+    private void writeValues(FixedWidthWriter writer, int numToGenerate) {
+        Records records = generateRecords(useClass, numToGenerate);
         records.forEach(record -> {
             record.forEach(writer::addValue);
             writer.writeValuesToRow();
@@ -36,11 +37,11 @@ public class FixedWidthFactory extends FlatFileFactory<FixedWidthSettings> {
     }
 
     @Override
-    public File buildFile(File file) {
+    public File createFile(File file, int numToGenerate) {
         FixedWidthWriterSettings writerSettings = new FixedWidthWriterSettings(settings.getFixedWidthFields());
         FixedWidthWriter fixedWidthWriter = new FixedWidthWriter(file, writerSettings);
 
-        writeValues(fixedWidthWriter);
+        writeValues(fixedWidthWriter, numToGenerate);
         return file;
     }
 }

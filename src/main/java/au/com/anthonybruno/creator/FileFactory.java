@@ -4,7 +4,7 @@ import java.io.File;
 
 public interface FileFactory {
 
-    String buildString();
+    String createString(int rowsToGenerate);
 
-    File buildFile(File file);
+    File createFile(File file, int rowsToGenerate);
 }

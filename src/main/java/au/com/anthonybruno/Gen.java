@@ -3,6 +3,10 @@ package au.com.anthonybruno;
 import au.com.anthonybruno.creator.CsvFactory;
 import au.com.anthonybruno.creator.FileFactory;
 import au.com.anthonybruno.creator.FixedWidthFactory;
+import au.com.anthonybruno.defintion.FieldDefinition;
+import au.com.anthonybruno.defintion.FileTypeDefinition;
+import au.com.anthonybruno.defintion.RecordDefinition;
+import au.com.anthonybruno.defintion.ResultDefinition;
 import au.com.anthonybruno.generator.Generator;
 import au.com.anthonybruno.settings.CsvSettings;
 import au.com.anthonybruno.settings.FixedWidthSettings;
@@ -10,14 +14,15 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 
-public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinition {
+public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinition, RecordDefinition {
 
     private static final int defaultRowsToGenerate = 5;
 
     private Class<?> useClass;
+    private int numToGenerate;
     private FileFactory fileFactory;
 
-    public static FieldDefinition create() {
+    public static FieldDefinition start() {
         return new Gen();
     }
 
@@ -38,31 +43,31 @@ public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinitio
     }
 
     @Override
-    public ResultDefinition asCsv() {
-        return asCsv(new CsvSettings(defaultRowsToGenerate));
+    public RecordDefinition asCsv() {
+        return asCsv(new CsvSettings());
     }
 
     @Override
-    public ResultDefinition asCsv(CsvSettings csvSettings) {
+    public RecordDefinition asCsv(CsvSettings csvSettings) {
         fileFactory = new CsvFactory(csvSettings, useClass);
         return this;
     }
 
     @Override
-    public ResultDefinition asFixedWidth(FixedWidthSettings fixedWidthSettings) {
+    public RecordDefinition asFixedWidth(FixedWidthSettings fixedWidthSettings) {
         fileFactory = new FixedWidthFactory(fixedWidthSettings, useClass);
         return this;
     }
 
     @Override
     public File toFile(File file) {
-        return fileFactory.buildFile(file);
+        return fileFactory.createFile(file, numToGenerate);
     }
 
     @Override
-    public String toString() {
+    public String toStringForm() {
         checkSetup();
-        return fileFactory.buildString();
+        return fileFactory.createString(numToGenerate);
     }
 
     private void checkSetup() {
@@ -76,4 +81,9 @@ public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinitio
     }
 
 
+    @Override
+    public ResultDefinition generate(int num) {
+        this.numToGenerate = num;
+        return this;
+    }
 }
