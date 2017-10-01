@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -45,8 +46,14 @@ public class FixedWidthPojoGenTest {
         FixedWidthParser fixedWidthParser = new FixedWidthParser(settings);
 
         List<String[]> parsedResult = fixedWidthParser.parseAll(file);
-        assertEquals(5, parsedResult.size());
+        assertEquals(printRows(parsedResult), 5, parsedResult.size());
 
+    }
+
+    private String printRows(List<String[]> rows) {
+        StringBuilder out = new StringBuilder();
+        rows.forEach((row) -> out.append(Arrays.toString(row)).append("\n"));
+        return out.toString();
     }
 
 
@@ -61,7 +68,7 @@ public class FixedWidthPojoGenTest {
     private File generateFixedWidthFile() {
         File file;
         try {
-            file = File.createTempFile("tst", ".txt");
+            file = File.createTempFile("fixed-tst", ".txt");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
