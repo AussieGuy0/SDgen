@@ -12,7 +12,7 @@ If you're using Maven, just add the following to your `pom.xml`
 </dependency>
 ```
 
-Alternatively, grab the [latest jar](/releases/tag/0.1.0) and chuck it on your class path.
+Alternatively, grab the [latest jar](https://github.com/AussieGuy0/SDgen/releases/tag/0.1.0) and chuck it on your class path.
 
 ## Usage
 There are two main ways to use SDGen to generate random data. The first way is
