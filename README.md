@@ -7,12 +7,12 @@ If you're using Maven, just add the following to your `pom.xml`
 ```xml
 <dependency>
     <groupId>au.com.anthonybruno</groupId>
-    <artifactId>SDGen</artifactId>
+    <artifactId>SdGen</artifactId>
     <version>0.1.0</version>
 </dependency>
 ```
 
-Alternatively, grab the [latest jar]() and chuck it on your class path.
+Alternatively, grab the [latest jar](/releases/tag/0.1.0) and chuck it on your class path.
 
 ## Usage
 There are two main ways to use SDGen to generate random data. The first way is
@@ -22,7 +22,7 @@ to use an annotated plain old Java object like so:
 Gen.create()
     .use(Person.class)
     .generate(2) //Number of rows that will be generated
-    .asCsv(csvSettings)
+    .asCsv()
     .toFile("output.csv");
 ```
 
@@ -32,7 +32,7 @@ Where the Person class looks like this:
 ```java
 public class Person {
 
-   @Generator(NameGenerator.class) //Generator is used to create values
+   @Generation(NameGenerator.class) //Generator is used to create values
    private final String name; 
    
    @Range(min=18, max=70) //Range is used to limit the range of values
@@ -64,7 +64,7 @@ Gen.create()
     .addField("Name", new NameGenerator())
     .addField("Age", new IntGenerator(18, 70)
     .generate(2) //number of rows to generate
-    .asCsv(csvSettings)
+    .asCsv()
     .toFile("output.csv");
 ```
 
