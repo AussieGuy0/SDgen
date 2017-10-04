@@ -3,7 +3,7 @@ package au.com.anthonybruno;
 import au.com.anthonybruno.creator.CsvFactory;
 import au.com.anthonybruno.creator.FileFactory;
 import au.com.anthonybruno.creator.FixedWidthFactory;
-import au.com.anthonybruno.defintion.*;
+import au.com.anthonybruno.definition.*;
 import au.com.anthonybruno.generator.Generator;
 import au.com.anthonybruno.record.factory.ClassRecordFactory;
 import au.com.anthonybruno.record.factory.FieldsRecordFactory;

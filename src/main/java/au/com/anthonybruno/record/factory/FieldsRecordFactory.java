@@ -1,6 +1,6 @@
 package au.com.anthonybruno.record.factory;
 
-import au.com.anthonybruno.defintion.FieldData;
+import au.com.anthonybruno.definition.FieldData;
 import au.com.anthonybruno.record.DefaultRecords;
 import au.com.anthonybruno.record.Record;
 import au.com.anthonybruno.record.Records;

@@ -1,4 +1,4 @@
-package au.com.anthonybruno.defintion;
+package au.com.anthonybruno.definition;
 
 import au.com.anthonybruno.settings.CsvSettings;
 import au.com.anthonybruno.settings.FixedWidthSettings;

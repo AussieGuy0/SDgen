@@ -1,4 +1,4 @@
-package au.com.anthonybruno.defintion;
+package au.com.anthonybruno.definition;
 
 import java.io.File;
 

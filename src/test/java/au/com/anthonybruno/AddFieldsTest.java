@@ -1,7 +1,7 @@
 package au.com.anthonybruno;
 
-import au.com.anthonybruno.defintion.FieldDefinition;
-import au.com.anthonybruno.defintion.RecordDefinition;
+import au.com.anthonybruno.definition.FieldDefinition;
+import au.com.anthonybruno.definition.RecordDefinition;
 import au.com.anthonybruno.generator.defaults.StringGenerator;
 import au.com.anthonybruno.settings.CsvSettings;
 import org.junit.Test;
