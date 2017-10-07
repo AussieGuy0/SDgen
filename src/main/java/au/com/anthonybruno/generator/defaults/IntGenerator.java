@@ -1,21 +1,17 @@
 package au.com.anthonybruno.generator.defaults;
 
-import au.com.anthonybruno.generator.Generator;
+import au.com.anthonybruno.generator.RangedGenerator;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class IntGenerator implements Generator<Integer> {
-
-    private final int min;
-    private final int max;
+public class IntGenerator extends RangedGenerator<Integer> {
 
     public IntGenerator() {
        this(Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     public IntGenerator(int min, int max) {
-        this.min = min;
-        this.max = max;
+        super(min, max);
     }
 
     @Override
