@@ -3,7 +3,7 @@
 
   <groupId>au.com.anthonybruno</groupId>
   <artifactId>SdGen</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>SdGen</name>
@@ -26,7 +26,7 @@
     <connection>scm:git:git://github.com/AussieGuy0/SDgen.git</connection>
     <developerConnection>scm:git:git@github.com:AussieGuy0/SDgen.git</developerConnection>
     <url>https://github.com/AussieGuy0/SDgen</url>
-    <tag>0.2.0</tag>
+    <tag>0.1.0</tag>
   </scm>
 
   <developers>
