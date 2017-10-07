@@ -3,26 +3,24 @@ package au.com.anthonybruno.definition;
 import java.io.File;
 
 /**
- * This ResultDefintion interface is about setting the pathway to the file where the randomly generated data will be held
- * This interface wants to see a toFile() method and a toStringForm() method implemented
- * 
- * @author Anthony Bruno
+ * Specifies how the generated data will be stored. Any method used here will start the data generation process.
  *
+ * @author Anthony Bruno
  */
 public interface ResultDefinition {
 
-	/**
-	 * this abstract method creates a file pathway
-	 * 
-	 * @param file	a File object which gives the pathway
-	 * @return		a File object which has the pathway to the file where the randomly generated data is to be held
-	 */
+    /**
+     * Saves the generated data to the specified File and returns it.
+     *
+     * @param file a File where the generated data will be written to
+     * @return a File containing the generated data
+     */
     File toFile(File file);
 
     /**
-     * this abstract method returns a String which shows the file pathway information
-     * 
-     * @return	a String which gives the file pathway information
+     * Returns the generated data as a String.
+     *
+     * @return a String containing the generated data
      */
     String toStringForm();
 }

@@ -4,29 +4,26 @@ import au.com.anthonybruno.generator.Generator;
 
 /**
  * The RecordDefinition interface adds data about the fields or specifies the number of rows the data will be generated for
- * This interface wants to see an addField method and a generate method implemented.
  * The addField method takes the name of the field and type of generator and
  * the generate method specifies the number of rows needed for generation
- * 
- * @author Anthony Bruno
  *
+ * @author Anthony Bruno
  */
 public interface RecordDefinition {
 
-	/**
-	 * this abstract constructor takes in parameters that name the field and the type of values required to be generated
-	 * 
-	 * @param 	a String that names the field
-	 * @param 	a Generator object that gives the type of values needed for generation
-	 */
+    /**
+     * Adds a field that will be used when generating data.
+     *
+     * @param name      the key of the field
+     * @param generator the Generator that creates values for the field
+     */
     RecordDefinition addField(String name, Generator generator);
 
     /**
-     * this abstract method wants a method that takes an int and returns an object referenced by FileTypeDefintion interface
-     * which will state the number of rows to be generated 
-     * 
-     * @param num	an int that indicates the number of rows needed
-     * @return		an object referenced by FileTypeDefintion interface which specifies number of rows to be generated
+     * Specifies how many records will be generated.
+     *
+     * @param num the int defining how many rows will be generated
+     * @return A {@link FileTypeDefinition} which allows the specification of the type of file to create
      */
     FileTypeDefinition generate(int num);
 }

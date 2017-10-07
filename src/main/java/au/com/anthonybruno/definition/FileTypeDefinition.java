@@ -4,34 +4,34 @@ import au.com.anthonybruno.settings.CsvSettings;
 import au.com.anthonybruno.settings.FixedWidthSettings;
 
 /**
- * This FileTypeDefinition interface provides methods for working with .csv files
- * This interface wants to see asCsv() or asCsv(args) and asFixedWidth(args) implemented
- * 
- * @author Anthony Bruno
+ * Defines the file format of the generated data.
  *
+ * @author Anthony Bruno
  */
 public interface FileTypeDefinition {
 
-	/**
-	 * This abstract method returns a ResultDefinition object which directs the format to be .csv
-	 * 
-	 * @return ResultDefinition object that directs .csv to be the file format
-	 */
+    /**
+     * Sets the format to csv.
+     *
+     * @return a ResultDefinition object to specify how the generated data is saved.
+     */
     ResultDefinition asCsv();
 
     /**
-     * This abstract method directs the format to be .csv with specified heading settings
-     * 
-     * @param settings 	a CsvSettings object which specifies whether or not to include a heading
-     * @return 			an object referenced by ResultDefinition that specifies .csv format and whether it includes headings
+     * Sets the format to csv with configuration options given by the specified settings object.
+     *
+     * @param settings a CsvSettings object which configures how the csv is created such as whether or include a heading row.
+     *
+     * @return a ResultDefinition object to specify how the generated data is saved.
      */
     ResultDefinition asCsv(CsvSettings settings);
 
     /**
-     * This abstract method directs the format to be .csv with heading and fixed width settings
-     * 
-     * @param fixedWidthSettings 	a FixedWidthSettings object that specifies the fixed width desired
-     * @return 						an object referenced by ResultDefinition object 
+     * Sets the format to be fixed width with configuration options given by the specified settings object.
+     *
+     * @param fixedWidthSettings a FixedWidthSettings object that specifies the fixed width desired
+     *
+     * @return a ResultDefinition object to specify how the generated data is saved.
      */
     ResultDefinition asFixedWidth(FixedWidthSettings fixedWidthSettings);
 }

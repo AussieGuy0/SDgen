@@ -23,8 +23,8 @@ public interface FieldDefinition {
     /**
      * Abstract method takes two parameters to create the data for a field
      * 
-     * @param 	a String that names the field
-     * @param 	a Generator object that gives the type of values needed for generation
+     * @param name String that names the field
+     * @param generator Generator object that gives the type of values needed for generation
      * @return 	an object referenced by RecordDefinition with name and generator
      */
     RecordDefinition addField(String name, Generator generator);
