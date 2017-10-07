@@ -1,7 +1,7 @@
 package au.com.anthonybruno;
 
-import au.com.anthonybruno.definition.FieldDefinition;
 import au.com.anthonybruno.definition.RecordDefinition;
+import au.com.anthonybruno.definition.StartDefinition;
 import au.com.anthonybruno.generator.defaults.StringGenerator;
 import au.com.anthonybruno.settings.CsvSettings;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class AddFieldsTest {
 
     @Test
     public void generateLotsOfFields() {
-        FieldDefinition fieldDefinition = Gen.start();
+        StartDefinition fieldDefinition = Gen.start();
         RecordDefinition recordDefinition = null;
         for (int i = 0; i < 100; i++) {
             recordDefinition = fieldDefinition.addField("Field " + i, new StringGenerator());

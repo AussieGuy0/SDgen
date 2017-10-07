@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinition, RecordDefinition {
+public class Gen implements FileTypeDefinition, ResultDefinition, StartDefinition, RecordDefinition, FieldDefinition {
 
     private int numToGenerate;
     private FileFactory fileFactory;
@@ -23,7 +23,7 @@ public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinitio
     private Class<?> useClass;
     private List<FieldData> fields = new ArrayList<>();
 
-    public static FieldDefinition start() {
+    public static StartDefinition start() {
         return new Gen();
     }
 
@@ -39,7 +39,7 @@ public class Gen implements FileTypeDefinition, ResultDefinition, FieldDefinitio
     }
 
     @Override
-    public RecordDefinition addField(String name, Generator generator) {
+    public FieldDefinition addField(String name, Generator generator) {
         fields.add(new FieldData(name, generator));
         return this;
     }
