@@ -91,7 +91,7 @@ Any pull request needs all tests passing (can run tests via `mvn test`),
 as well as the addition of tests that cover any added code.
 
 ### Contributors List
-- @Jo-Hunter
-- @styler3
+- [Jo-Hunter](https://github.com/Jo-Hunter)
+- [styler3](https://github.com/styler3)
 
 ## Acknowledgements
