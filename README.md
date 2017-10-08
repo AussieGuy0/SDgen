@@ -82,4 +82,16 @@ public interface Generator<T> {
 
 SDgen provides basic generators for all primitive data types. 
 
+## Contributing
+To contribute, please fork the project and submit a pull request. 
+The project is backed by `maven` which handles dependency management and
+the build process.
+
+Any pull request needs all tests passing (can run tests via `mvn test`),
+as well as the addition of tests that cover any added code.
+
+### Contributors List
+- @Jo-Hunter
+- @styler3
+
 ## Acknowledgements
