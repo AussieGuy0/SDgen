@@ -20,7 +20,7 @@ import static org.junit.Assert.assertFalse;
 public class FixedWidthPojoGenTest {
 
     private final int rows = 5;
-    private final FixedWidthFields fixedWidthFields = new FixedWidthFields(20, 20);
+    private final FixedWidthFields fixedWidthFields = new FixedWidthFields(20, 20, 40);
 
     @Test
     public void isNonEmpty() {

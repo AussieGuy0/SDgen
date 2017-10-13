@@ -2,6 +2,7 @@ package au.com.anthonybruno.generator;
 
 import au.com.anthonybruno.generator.defaults.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,9 @@ public class DefaultGenerators {
 
     private static Map<Class<?>, Generator<?>> getDefaultGenerators() {
         Map<Class<?>, Generator<?>> map = new HashMap<>();
+
         map.put(String.class, new StringGenerator());
+
         map.put(int.class, new IntGenerator());
         map.put(Integer.class, new IntGenerator());
 
@@ -39,6 +42,8 @@ public class DefaultGenerators {
 
         map.put(float.class, new FloatGenerator());
         map.put(Float.class, new FloatGenerator());
+
+        map.put(Date.class, new DateGenerator());
 
         return map;
     }

@@ -32,11 +32,11 @@ public class CsvPojoGenTest {
     }
 
     @Test
-    public void has2Columns() {
+    public void has3Columns() {
         String result = generatePersonCsv();
         String firstRow = result.substring(0, result.indexOf("\n"));
 
-        assertEquals(1, countOccurrences(firstRow, delimiter));
+        assertEquals(2, countOccurrences(firstRow, delimiter));
     }
 
     @Test
