@@ -18,6 +18,14 @@ public interface ResultDefinition {
     File toFile(File file);
 
     /**
+     * Saves the generated date to a File specified by the path and returns it.
+     *
+     * @param path The directory path where the file will be saved
+     * @return a File containing the generated data
+     */
+    File toFile(String path);
+
+    /**
      * Returns the generated data as a String.
      *
      * @return a String containing the generated data

@@ -67,6 +67,11 @@ public class Gen implements FileTypeDefinition, ResultDefinition, StartDefinitio
     }
 
     @Override
+    public File toFile(String path) {
+        return toFile(new File(path));
+    }
+
+    @Override
     public String toStringForm() {
         checkSetup();
         return fileFactory.createString(numToGenerate);

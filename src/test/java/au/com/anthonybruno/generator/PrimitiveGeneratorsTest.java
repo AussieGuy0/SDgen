@@ -42,7 +42,7 @@ public class PrimitiveGeneratorsTest {
         }
         int diff = Math.abs(trueValues - falseValues);
 
-        assertTrue(diff < 600);
+        assertTrue(diff < 1000);
 
     }
 }

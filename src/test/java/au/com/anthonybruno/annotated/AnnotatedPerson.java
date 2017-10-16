@@ -1,17 +1,22 @@
 package au.com.anthonybruno.annotated;
 
 import au.com.anthonybruno.annotation.Generation;
+import au.com.anthonybruno.annotation.Range;
 import au.com.anthonybruno.generator.Generator;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static au.com.anthonybruno.annotated.GeneratorAnnotationTest.maxAge;
+import static au.com.anthonybruno.annotated.GeneratorAnnotationTest.minAge;
+
 public class AnnotatedPerson {
 
     @Generation(NameGenerator.class)
     private final String name;
 
+    @Range(min=minAge, max=maxAge)
     private final int age;
 
     @Generation(GenderGenerator.class)
