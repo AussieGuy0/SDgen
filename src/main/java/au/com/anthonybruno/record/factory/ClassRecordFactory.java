@@ -54,18 +54,18 @@ public class ClassRecordFactory implements RecordFactory {
     private Object generateValue(Field field) {
         Generator<?> generator;
         if ((generator = fieldGeneratorMap.get(field)) == null) {
-            Generator<?> canidiateGenerator;
+            Generator<?> candidateGenerator;
             Generation generatorAnnotation = field.getAnnotation(Generation.class);
             if (generatorAnnotation != null) {
-                canidiateGenerator = ReflectionUtils.buildWithNoArgConstructor(generatorAnnotation.value());
+                candidateGenerator = ReflectionUtils.buildWithNoArgConstructor(generatorAnnotation.value());
             } else {
-                canidiateGenerator = DefaultGenerators.get(field.getType());
+                candidateGenerator = DefaultGenerators.get(field.getType());
             }
             Range range = field.getAnnotation(Range.class);
-            if (range != null && canidiateGenerator instanceof RangedGenerator<?>) {
-                generator = ReflectionUtils.buildWithConstructor(canidiateGenerator.getClass(), range.min(), range.max());
+            if (range != null && candidateGenerator instanceof RangedGenerator<?>) {
+                generator = ReflectionUtils.buildWithConstructor(candidateGenerator.getClass(), range.min(), range.max());
             } else {
-                generator = canidiateGenerator;
+                generator = candidateGenerator;
             }
             fieldGeneratorMap.put(field, generator);
         }
