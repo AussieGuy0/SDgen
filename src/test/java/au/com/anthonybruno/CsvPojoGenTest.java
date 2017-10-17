@@ -87,6 +87,7 @@ public class CsvPojoGenTest {
         String[] headerRows = result.split("\n")[0].split(",");
         assertEquals("name", headerRows[0]);
         assertEquals("age", headerRows[1]);
+        assertEquals("birthday", headerRows[2]);
     }
 
     @Test
@@ -96,6 +97,15 @@ public class CsvPojoGenTest {
         ReadFile readFile = new ReadFile(file);
 
         assertTrue(!readFile.getText().isEmpty());
+    }
+
+    @Test
+    public void generateCsvWithTabs() {
+        CsvSettings csvSettings = new CsvSettings.Builder().setDelimiter('\t').build();
+        String result = Gen.start().use(Person.class).generate(5).asCsv(csvSettings).toStringForm();
+        String firstRow = result.split("\n")[0];
+
+        assertEquals(3, firstRow.split("\t").length);
     }
 
 

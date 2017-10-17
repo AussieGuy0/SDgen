@@ -11,14 +11,19 @@ import java.io.StringWriter;
 
 public class CsvFactory extends FlatFileFactory<CsvSettings> {
 
+    private final CsvWriterSettings csvWriterSettings;
+
     public CsvFactory(CsvSettings settings, RecordFactory recordFactory) {
         super(settings, recordFactory);
+        csvWriterSettings = new CsvWriterSettings();
+
+        csvWriterSettings.getFormat().setDelimiter(settings.getDelimiter());
     }
 
     @Override
     public String createString(int rowsToGenerate) {
         StringWriter stringWriter = new StringWriter();
-        CsvWriter csvWriter = new CsvWriter(stringWriter, new CsvWriterSettings());
+        CsvWriter csvWriter = new CsvWriter(stringWriter, csvWriterSettings);
         writeValues(csvWriter, rowsToGenerate);
         return stringWriter.toString();
     }
@@ -38,7 +43,7 @@ public class CsvFactory extends FlatFileFactory<CsvSettings> {
 
     @Override
     public File createFile(File file, int rowsToGenerate) {
-        CsvWriter csvWriter = new CsvWriter(file, new CsvWriterSettings());
+        CsvWriter csvWriter = new CsvWriter(file, csvWriterSettings);
         writeValues(csvWriter, rowsToGenerate);
         return file;
     }

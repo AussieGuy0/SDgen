@@ -46,7 +46,7 @@ public class Gen implements FileTypeDefinition, ResultDefinition, StartDefinitio
 
     @Override
     public ResultDefinition asCsv() {
-        return asCsv(new CsvSettings(true));
+        return asCsv(new CsvSettings.Builder().build());
     }
 
     @Override
