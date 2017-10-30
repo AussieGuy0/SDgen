@@ -1,6 +1,7 @@
 package au.com.anthonybruno.record.factory;
 
 import au.com.anthonybruno.annotation.Generation;
+import au.com.anthonybruno.annotation.Index;
 import au.com.anthonybruno.annotation.Range;
 import au.com.anthonybruno.generator.DefaultGenerators;
 import au.com.anthonybruno.generator.Generator;
@@ -28,7 +29,7 @@ public class ClassRecordFactory implements RecordFactory {
 
     @Override
     public Records generateRecords(int numToGenerate) {
-        Field[] fields = classToUse.getDeclaredFields();
+        Field[] fields = getFields();
         List<String> fieldNames = new ArrayList<>();
         for (Field field : fields) {
             fieldNames.add(field.getName());
@@ -43,6 +44,44 @@ public class ClassRecordFactory implements RecordFactory {
         return new DefaultRecords(fieldNames, records);
     }
 
+    private Field[] getFields() {
+        Field[] fields = classToUse.getDeclaredFields();
+        Field[] orderedFields = new Field[fields.length];
+        List<Field> leftoverFields = new ArrayList<>();
+
+        for (Field field : fields) {
+            Index index = field.getAnnotation(Index.class);
+            if (index != null) {
+                int indexNum = index.value();
+                if (indexNum >= orderedFields.length) {
+                    throw new RuntimeException("Index number of field: " + field.getName() + " is larger than the number of fields " + orderedFields.length);
+                }
+
+                if (orderedFields[indexNum] != null) {
+                    throw new RuntimeException("'" + orderedFields[indexNum].getName() + "' and '" + field.getName() + "' has same index number of: " + indexNum);
+                }
+
+                orderedFields[indexNum] = field;
+            } else {
+                leftoverFields.add(field);
+            }
+        }
+
+        if (leftoverFields.size() == fields.length) { //no fields have index annotation
+            return fields;
+        }
+
+        for (Field field : leftoverFields) {
+            for (int i = 0; i < orderedFields.length; i++) {
+                if (orderedFields[i] == null) {
+                    orderedFields[i] = field;
+                    break;
+                }
+            }
+        }
+        return orderedFields;
+    }
+
     private Record generateRecord(Field[] fields) {
         List<Object> list = new ArrayList<>();
         for (Field field : fields) {
@@ -54,24 +93,30 @@ public class ClassRecordFactory implements RecordFactory {
     private Object generateValue(Field field) {
         Generator<?> generator;
         if ((generator = fieldGeneratorMap.get(field)) == null) {
-            Generator<?> candidateGenerator;
-            Generation generatorAnnotation = field.getAnnotation(Generation.class);
-            if (generatorAnnotation != null) {
-                candidateGenerator = ReflectionUtils.buildWithNoArgConstructor(generatorAnnotation.value());
-            } else {
-                candidateGenerator = DefaultGenerators.get(field.getType());
-            }
+            Generator<?> candidateGenerator = getGenerator(field);
+
             Range range = field.getAnnotation(Range.class);
             if (range != null && candidateGenerator instanceof RangedGenerator<?>) {
                 generator = ReflectionUtils.buildWithConstructor(candidateGenerator.getClass(), range.min(), range.max());
             } else {
                 generator = candidateGenerator;
             }
+
             fieldGeneratorMap.put(field, generator);
+
         }
 
         return generator.generate();
+    }
 
-
+    private Generator<?> getGenerator(Field field) {
+        Generator<?> generator;
+        Generation generatorAnnotation = field.getAnnotation(Generation.class);
+        if (generatorAnnotation != null) {
+            generator = ReflectionUtils.buildWithNoArgConstructor(generatorAnnotation.value());
+        } else {
+            generator = DefaultGenerators.get(field.getType());
+        }
+        return generator;
     }
 }
