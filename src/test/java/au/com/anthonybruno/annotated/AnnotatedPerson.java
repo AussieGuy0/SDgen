@@ -3,6 +3,7 @@ package au.com.anthonybruno.annotated;
 import au.com.anthonybruno.annotation.Generation;
 import au.com.anthonybruno.annotation.Range;
 import au.com.anthonybruno.generator.Generator;
+import au.com.anthonybruno.generator.defaults.IntGenerator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,7 @@ public class AnnotatedPerson {
     private final String name;
 
     @Range(min=minAge, max=maxAge)
+    @Generation(value = IntGenerator.class, name="yearsSinceBirth")
     private final int age;
 
     @Generation(GenderGenerator.class)

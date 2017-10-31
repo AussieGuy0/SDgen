@@ -10,8 +10,7 @@ import java.io.StringReader;
 import java.util.List;
 
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class GeneratorAnnotationTest {
 
@@ -23,6 +22,13 @@ public class GeneratorAnnotationTest {
     public void notEmpty() {
         String result = generateAnnotatedPersonCsv();
         assertFalse(result.isEmpty());
+    }
+
+    @Test
+    public void correctHeaders() {
+        String[] firstRow = generateAnnotatedPersonCsv().split("\n")[0].split(",");
+
+        assertArrayEquals(new String[]{"name", "yearsSinceBirth", "gender"}, firstRow);
     }
 
     @Test

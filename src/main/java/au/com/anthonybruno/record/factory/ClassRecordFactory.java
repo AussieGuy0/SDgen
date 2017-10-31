@@ -30,10 +30,7 @@ public class ClassRecordFactory implements RecordFactory {
     @Override
     public Records generateRecords(int numToGenerate) {
         Field[] fields = getFields();
-        List<String> fieldNames = new ArrayList<>();
-        for (Field field : fields) {
-            fieldNames.add(field.getName());
-        }
+        List<String> fieldNames = getFieldNames(fields);
 
         List<Record> records = new ArrayList<>();
         for (int i = 0; i < numToGenerate; i++) {
@@ -42,6 +39,19 @@ public class ClassRecordFactory implements RecordFactory {
         }
 
         return new DefaultRecords(fieldNames, records);
+    }
+
+    private List<String> getFieldNames(Field[] fields) {
+        List<String> fieldNames = new ArrayList<>();
+        for (Field field : fields) {
+            Generation generation = field.getAnnotation(Generation.class);
+            if (generation != null && !generation.name().equals(Generation.DEFAULT_FIELD)) {
+                fieldNames.add(generation.name());
+            } else {
+                fieldNames.add(field.getName());
+            }
+        }
+        return fieldNames;
     }
 
     private Field[] getFields() {
