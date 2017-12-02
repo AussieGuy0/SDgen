@@ -3,6 +3,7 @@ package au.com.anthonybruno.annotated;
 import au.com.anthonybruno.annotation.Generation;
 import au.com.anthonybruno.annotation.Range;
 import au.com.anthonybruno.generator.Generator;
+import au.com.anthonybruno.generator.OptionGenerator;
 import au.com.anthonybruno.generator.defaults.IntGenerator;
 
 import java.util.Arrays;
@@ -48,9 +49,11 @@ public class AnnotatedPerson {
 
     public static class GenderGenerator implements Generator<String> {
 
+        private final OptionGenerator<String> optionGenerator = new OptionGenerator<>("Female");
+
         @Override
         public String generate() {
-            return "Female";
+            return optionGenerator.generate();
         }
     }
 }
