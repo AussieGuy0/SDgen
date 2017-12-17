@@ -120,13 +120,15 @@ public class ClassRecordFactory implements RecordFactory {
     }
 
     private Generator<?> getGenerator(Field field) {
-        Generator<?> generator;
         Generation generatorAnnotation = field.getAnnotation(Generation.class);
+        return createGenerator(field, generatorAnnotation);
+    }
+
+    private Generator<?> createGenerator(Field field, Generation generatorAnnotation) {
         if (generatorAnnotation != null) {
-            generator = ReflectionUtils.buildWithNoArgConstructor(generatorAnnotation.value());
+            return ReflectionUtils.buildWithNoArgConstructor(generatorAnnotation.value());
         } else {
-            generator = DefaultGenerators.get(field.getType());
+            return DefaultGenerators.get(field.getType());
         }
-        return generator;
     }
 }

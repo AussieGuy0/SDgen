@@ -1,11 +1,7 @@
 package au.com.anthonybruno.utils;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ReflectionUtils {
 
@@ -36,29 +32,5 @@ public class ReflectionUtils {
             }
         }
         throw new IllegalArgumentException("No " + args.length + " args constructor found in class: " + toBuild);
-    }
-
-    public static Field getField(Class<?> c, String fieldName) throws NoSuchFieldException {
-        Class<?> current = c;
-        do {
-            for (Field field : current.getDeclaredFields()) {
-                System.out.println(field.getName());
-                if (field.getName().equals(fieldName)) {
-                    return field;
-                }
-            }
-            current = current.getSuperclass();
-        } while (current != null);
-        throw new NoSuchFieldException();
-    }
-
-    public static List<Field> getAllFields(Class<?> c) {
-        List<Field> out = new ArrayList<>();
-        Class<?> current = c;
-        do {
-            out.addAll(Arrays.asList(current.getDeclaredFields()));
-            current = current.getSuperclass();
-        } while (current != null);
-        return out;
     }
 }

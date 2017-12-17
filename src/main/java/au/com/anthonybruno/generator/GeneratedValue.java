@@ -1,24 +1,31 @@
 package au.com.anthonybruno.generator;
 
+
+import au.com.anthonybruno.generator.format.Format;
+import au.com.anthonybruno.generator.format.ToStringFormat;
+
+
 public class GeneratedValue<T> {
 
-    private final Class<T> type;
     private T value;
+    private Format<T> format;
 
 
-    public GeneratedValue(Class<T> type) {
-        this.type = type;
+    public GeneratedValue(T value) {
+        this(value, new ToStringFormat<>());
+    }
+
+    public GeneratedValue(T value, Format<T> format) {
+        this.value = value;
+        this.format = format;
     }
 
     public T get() {
-        if (value == null) {
-            Generator<?> generator = DefaultGenerators.get(type);
-            if (generator == null) {
-                throw new RuntimeException("No generator for type: " + type);
-            }
-            value = (T) generator.generate();
-        }
         return value;
+    }
+
+    public String format() {
+        return format.format(value);
     }
 
 }
