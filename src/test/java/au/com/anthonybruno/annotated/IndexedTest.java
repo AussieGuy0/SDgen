@@ -18,10 +18,7 @@ public class IndexedTest {
 
         String[] firstRow = generated.split("\n")[0].split(",");
         assertArrayEquals(new String[]{"c", "b", "d", "a"}, firstRow);
-
-
     }
-
 
 
     private static class Pojo {
