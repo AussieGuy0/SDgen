@@ -10,6 +10,7 @@ import au.com.anthonybruno.record.factory.FieldsRecordFactory;
 import au.com.anthonybruno.record.factory.RecordFactory;
 import au.com.anthonybruno.settings.CsvSettings;
 import au.com.anthonybruno.settings.FixedWidthSettings;
+import au.com.anthonybruno.utils.ArgumentUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class Gen implements FileTypeDefinition, ResultDefinition, StartDefinitio
 
     @Override
     public FieldDefinition addField(String name, Generator generator) {
+        ArgumentUtils.isNotNull(generator, "Can not add '" + name + "' field with null generator");
         fields.add(new FieldData(name, generator));
         return this;
     }

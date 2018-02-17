@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.io.StringReader;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.*;
@@ -87,6 +88,16 @@ public class GeneratorAnnotationTest {
         }
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void generateMultivalued() {
+        Gen.start()
+                .use(UnsupportedTypeClass.class)
+                .generate(5)
+                .asCsv()
+                .toStringForm();
+
+    }
+
     private String generateAnnotatedPersonCsv() {
         return Gen.start()
                 .use(AnnotatedPerson.class)
@@ -94,4 +105,15 @@ public class GeneratorAnnotationTest {
                 .asCsv(new CsvSettings(true))
                 .toStringForm();
     }
+
+
+    private static class UnsupportedTypeClass {
+
+        private final AtomicInteger unsupportedType;
+
+        private UnsupportedTypeClass(AtomicInteger unsupportedType) {
+            this.unsupportedType = unsupportedType;
+        }
+    }
+
 }

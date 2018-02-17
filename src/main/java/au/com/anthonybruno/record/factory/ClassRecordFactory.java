@@ -101,9 +101,13 @@ public class ClassRecordFactory implements RecordFactory {
     }
 
     private Object generateValue(Field field) {
-        Generator<?> generator;
-        if ((generator = fieldGeneratorMap.get(field)) == null) {
+        Generator<?> generator = fieldGeneratorMap.get(field);
+        if (generator == null) {
             Generator<?> candidateGenerator = getGenerator(field);
+
+            if (candidateGenerator == null) {
+                throw new IllegalStateException("No Generator for field type: " +  field.getType().getTypeName() + " " + field.getName() + ". Please provide one using the @Generation annotation.");
+            }
 
             Range range = field.getAnnotation(Range.class);
             if (range != null && candidateGenerator instanceof RangedGenerator<?>) {
@@ -113,7 +117,6 @@ public class ClassRecordFactory implements RecordFactory {
             }
 
             fieldGeneratorMap.put(field, generator);
-
         }
 
         return generator.generate();
