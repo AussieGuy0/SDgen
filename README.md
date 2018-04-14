@@ -51,7 +51,7 @@ Omitting Annotations would produce Strings like: `f9j)32`, and ints like: `-3409
 
 `output.csv` would look something like this:
 
-```
+```csv
 name, age
 Bob, 40
 Ashley, 22
@@ -69,29 +69,44 @@ Gen.create()
 ```
 
 ### Generator
-Generators are simple classes that generate random data.
+Generators are simple classes that generate random data. To create custom generators,
+you just have to implement the `Generator` interface.
+
+As the `Generator` interface is a functional interface, you can use lambdas for easy
+creation of custom generators. For example:
 
 ```java
-@FunctionalInterface
-public interface Generator<T> {
-
-    T generate();
-    
-}
+Gen.create()
+    .addField("Name", () -> getRandomName()) 
 ```
 
-SDgen provides basic generators for all primitive data types. 
+For convenience, SDgen provides basic generators for all primitive data types. 
+
+### Settings
+A Settings object can be provided to provide control over the format that the data is produced.
+
+For example, it might want to use semicolons `;` as the delimiter instead of using commas. 
+It's possible to do this by:
+```java
+CsvSettings settings = new CsvSettings.Builder().setDelimiter(';').build()
+Gen.start()
+     .addField("name", () -> getRandomName())
+     .addField("age", new IntGenerator(18, 80))
+     .generate(1000)
+     .asCsv(settings) 
+```
 
 ## Contributing
 To contribute, please fork the project and submit a pull request. 
 The project is backed by `maven` which handles dependency management and
 the build process.
 
-Any pull request needs all tests passing (can run tests via `mvn test`),
-as well as the addition of tests that cover any added code.
+For any pull request to be accepted, it needs to have all tests passing (can run tests via `mvn test`).
+In addition, more tests should be created to cover added code.
 
 ### Contributors List
 - [Jo-Hunter](https://github.com/Jo-Hunter)
 - [styler3](https://github.com/styler3)
 
 ## Acknowledgements
+- [Travis CI](https://travis-ci.org) for continuous integration
