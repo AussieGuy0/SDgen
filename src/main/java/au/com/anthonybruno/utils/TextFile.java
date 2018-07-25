@@ -5,18 +5,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-public class ReadFile {
+public class TextFile {
 
     private final File file;
-    private final String text;
+    private final Lazy<String> text;
 
-    public ReadFile(File file) {
+    public TextFile(File file) {
+        if (!file.exists()) {
+            throw new IllegalArgumentException(file + " does not exist.");
+        }
         this.file = file;
-        this.text = readTextFromFile(file);
+        this.text = new Lazy<>(() -> readTextFromFile(file));
     }
 
     public String getText() {
-        return text;
+        return text.get();
     }
 
     private String readTextFromFile(File file) {

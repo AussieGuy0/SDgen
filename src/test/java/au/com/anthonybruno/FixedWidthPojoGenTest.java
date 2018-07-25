@@ -1,7 +1,7 @@
 package au.com.anthonybruno;
 
 import au.com.anthonybruno.settings.FixedWidthSettings;
-import au.com.anthonybruno.utils.ReadFile;
+import au.com.anthonybruno.utils.TextFile;
 import com.univocity.parsers.fixed.FixedWidthFields;
 import com.univocity.parsers.fixed.FixedWidthParser;
 import com.univocity.parsers.fixed.FixedWidthParserSettings;
@@ -49,7 +49,7 @@ public class FixedWidthPojoGenTest {
         FixedWidthParser fixedWidthParser = new FixedWidthParser(settings);
 
         List<String[]> parsedResult = fixedWidthParser.parseAll(file);
-        System.out.println(new ReadFile(file).getText());
+        System.out.println(new TextFile(file).getText());
         assertEquals(printRows(parsedResult), 5, parsedResult.size());
 
     }

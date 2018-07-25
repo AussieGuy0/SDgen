@@ -1,7 +1,7 @@
 package au.com.anthonybruno;
 
 import au.com.anthonybruno.settings.CsvSettings;
-import au.com.anthonybruno.utils.ReadFile;
+import au.com.anthonybruno.utils.TextFile;
 import org.junit.Test;
 
 import java.io.File;
@@ -94,7 +94,7 @@ public class CsvPojoGenTest {
     public void createFile() {
         File file = generatePersonCsvFile();
         assertNotNull(file);
-        ReadFile readFile = new ReadFile(file);
+        TextFile readFile = new TextFile(file);
 
         assertTrue(!readFile.getText().isEmpty());
     }
@@ -105,6 +105,7 @@ public class CsvPojoGenTest {
         String result = Gen.start().use(Person.class).generate(5).asCsv(csvSettings).toStringForm();
         String firstRow = result.split("\n")[0];
 
+        System.out.println(firstRow);
         assertEquals(3, firstRow.split("\t").length);
     }
 
