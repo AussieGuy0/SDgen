@@ -11,8 +11,8 @@ public class LazyTest {
     @Test
     public void valueIsCached() {
         Lazy<Integer> lazy = new Lazy<>(() -> new Random().nextInt());
-        int orginal = lazy.get();
+        int original = lazy.get();
         int second = lazy.get();
-        assertEquals(orginal, second);
+        assertEquals(original, second);
     }
 }

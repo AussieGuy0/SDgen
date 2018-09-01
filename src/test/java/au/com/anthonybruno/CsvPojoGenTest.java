@@ -105,18 +105,17 @@ public class CsvPojoGenTest {
         String result = Gen.start().use(Person.class).generate(5).asCsv(csvSettings).toStringForm();
         String firstRow = result.split("\n")[0];
 
-        System.out.println(firstRow);
         assertEquals(3, firstRow.split("\t").length);
     }
 
 
 
     private String generatePersonCsv() {
-       return Gen.start().use(Person.class).generate(5).asCsv(new CsvSettings(false)).toStringForm();
+       return Gen.start().use(Person.class).generate(rowsToGenerate).asCsv(new CsvSettings(false)).toStringForm();
     }
 
     private String generatePersonCsvWithHeaders() {
-        return Gen.start().use(Person.class).generate(5).asCsv(new CsvSettings(true)).toStringForm();
+        return Gen.start().use(Person.class).generate(rowsToGenerate).asCsv(new CsvSettings(true)).toStringForm();
     }
 
     private File generatePersonCsvFile() {

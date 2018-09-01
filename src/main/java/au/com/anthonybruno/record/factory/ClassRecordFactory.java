@@ -6,9 +6,9 @@ import au.com.anthonybruno.annotation.Range;
 import au.com.anthonybruno.generator.DefaultGenerators;
 import au.com.anthonybruno.generator.Generator;
 import au.com.anthonybruno.generator.RangedGenerator;
-import au.com.anthonybruno.record.DefaultRecords;
+import au.com.anthonybruno.record.DefaultRecordSupplier;
 import au.com.anthonybruno.record.Record;
-import au.com.anthonybruno.record.Records;
+import au.com.anthonybruno.record.RecordSupplier;
 import au.com.anthonybruno.record.RowRecord;
 import au.com.anthonybruno.utils.ReflectionUtils;
 
@@ -28,17 +28,10 @@ public class ClassRecordFactory implements RecordFactory {
     }
 
     @Override
-    public Records generateRecords(int numToGenerate) {
+    public RecordSupplier getRecordSupplier() {
         Field[] fields = getFields();
         List<String> fieldNames = getFieldNames(fields);
-
-        List<Record> records = new ArrayList<>();
-        for (int i = 0; i < numToGenerate; i++) {
-            records.add(generateRecord(fields));
-
-        }
-
-        return new DefaultRecords(fieldNames, records);
+        return new DefaultRecordSupplier(fieldNames, () -> generateRecord(fields));
     }
 
     private List<String> getFieldNames(Field[] fields) {

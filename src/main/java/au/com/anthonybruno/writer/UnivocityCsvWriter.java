@@ -35,7 +35,7 @@ public class UnivocityCsvWriter extends AbstractCsvWriter {
     }
 
     @Override
-    public void writeRecord(Record<?> record) {
+    public void writeRecord(Record record) {
         List<String> values = new ArrayList<>();
         record.forEach((value) -> {
             values.add(value.toString());

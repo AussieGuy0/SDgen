@@ -1,8 +1,8 @@
 package au.com.anthonybruno.record;
 
-public interface Record<T> extends Iterable<T> {
+public interface Record extends Iterable<Object> {
 
-    T get(int index);
+    Object get(int index);
 
-    T get(String fieldName);
+    Object get(String fieldName);
 }

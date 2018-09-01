@@ -1,8 +1,8 @@
 package au.com.anthonybruno.record.factory;
 
-import au.com.anthonybruno.record.Records;
+import au.com.anthonybruno.record.RecordSupplier;
 
 public interface RecordFactory {
 
-    Records generateRecords(int numToGenerate);
+    RecordSupplier getRecordSupplier();
 }

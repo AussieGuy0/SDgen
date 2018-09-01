@@ -1,6 +1,6 @@
 package au.com.anthonybruno.creator;
 
-import au.com.anthonybruno.record.Records;
+import au.com.anthonybruno.record.RecordSupplier;
 import au.com.anthonybruno.record.factory.RecordFactory;
 import au.com.anthonybruno.settings.CsvSettings;
 import au.com.anthonybruno.writer.AbstractCsvWriter;
@@ -28,13 +28,15 @@ public class CsvFactory extends FlatFileFactory<CsvSettings> {
     }
 
     private void writeValues(AbstractCsvWriter writer, int rowsToGenerate) {
-        Records records = recordFactory.generateRecords(rowsToGenerate);
+        RecordSupplier records = recordFactory.getRecordSupplier();
         if (settings.isIncludingHeaders()) {
             writer.writeRow(records.getFields());
         }
-        records.forEach(record -> {
-            writer.writeRecord(record);
-        });
+        records.supplyRecords()
+                .limit(rowsToGenerate)
+                .forEach(record -> {
+                    writer.writeRecord(record);
+                });
     }
 
     @Override

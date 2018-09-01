@@ -1,6 +1,6 @@
 package au.com.anthonybruno.creator;
 
-import au.com.anthonybruno.record.Records;
+import au.com.anthonybruno.record.RecordSupplier;
 import au.com.anthonybruno.record.factory.RecordFactory;
 import au.com.anthonybruno.settings.FixedWidthSettings;
 import com.univocity.parsers.fixed.FixedWidthWriter;
@@ -21,21 +21,23 @@ public class FixedWidthFactory extends FlatFileFactory<FixedWidthSettings> {
         StringWriter stringWriter = new StringWriter();
         FixedWidthWriter fixedWidthWriter = new FixedWidthWriter(stringWriter, writerSettings);
 
-        writeValues(fixedWidthWriter, numToGenerate);
+        generateAndWriteValues(fixedWidthWriter, numToGenerate);
         return stringWriter.toString();
     }
 
 
-    private void writeValues(FixedWidthWriter writer, int numToGenerate) {
-        Records records = recordFactory.generateRecords(numToGenerate);
+    private void generateAndWriteValues(FixedWidthWriter writer, int numToGenerate) {
+        RecordSupplier recordSupplier = recordFactory.getRecordSupplier();
         if (settings.isIncludingHeaders()) {
-            records.getFields().forEach(writer::addValue);
+            recordSupplier.getFields().forEach(writer::addValue);
             writer.writeValuesToRow();
         }
-        records.forEach(record -> {
-            record.forEach(writer::addValue);
-            writer.writeValuesToRow();
-        });
+        recordSupplier.supplyRecords()
+                .limit(numToGenerate)
+                .forEach(record -> {
+                    record.forEach(writer::addValue);
+                    writer.writeValuesToRow();
+                });
         writer.close();
     }
 
@@ -44,7 +46,7 @@ public class FixedWidthFactory extends FlatFileFactory<FixedWidthSettings> {
         FixedWidthWriterSettings writerSettings = new FixedWidthWriterSettings(settings.getFixedWidthFields());
         FixedWidthWriter fixedWidthWriter = new FixedWidthWriter(file, writerSettings);
 
-        writeValues(fixedWidthWriter, numToGenerate);
+        generateAndWriteValues(fixedWidthWriter, numToGenerate);
         return file;
     }
 }
