@@ -1,17 +1,17 @@
 package au.com.anthonybruno.settings;
 
-import com.univocity.parsers.fixed.FixedWidthFields;
+import java.util.List;
 
 public class FixedWidthSettings extends FlatFileSettings {
 
-    private final FixedWidthFields fixedWidthFields;
+    private final List<FixedWidthField> fixedWidthFields;
 
-    public FixedWidthSettings(boolean includeHeaders, FixedWidthFields fields) {
+    public FixedWidthSettings(boolean includeHeaders, List<FixedWidthField> fields) {
         super(includeHeaders);
         this.fixedWidthFields = fields;
     }
 
-    public FixedWidthFields getFixedWidthFields() {
+    public List<FixedWidthField> getFixedWidthFields() {
         return fixedWidthFields;
     }
 }

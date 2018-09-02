@@ -1,7 +1,7 @@
 package au.com.anthonybruno.generator.format;
 
 @FunctionalInterface
-public interface Format<T> {
+public interface Formatter<T> {
 
     String format(T toFormat);
 }

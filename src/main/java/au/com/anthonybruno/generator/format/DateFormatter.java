@@ -3,7 +3,7 @@ package au.com.anthonybruno.generator.format;
 import java.text.DateFormat;
 import java.util.Date;
 
-public class DateFormatter implements Format<Date> {
+public class DateFormatter implements Formatter<Date> {
 
     private final DateFormat dateFormat;
 

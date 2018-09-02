@@ -1,7 +1,7 @@
 package au.com.anthonybruno.generator.format;
 
 
-public class ToStringFormat<T> implements Format<T> {
+public class ToStringFormatter<T> implements Formatter<T> {
 
     @Override
     public String format(T toFormat) {

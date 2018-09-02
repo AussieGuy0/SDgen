@@ -7,6 +7,6 @@ public interface RecordSupplier {
 
     List<String> getFields();
 
-    Stream<Record> supplyRecords();
+    Stream<Record> supplyRecords(int numToGenerate);
 
 }

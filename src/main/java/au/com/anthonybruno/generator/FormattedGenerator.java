@@ -1,19 +1,19 @@
 package au.com.anthonybruno.generator;
 
-import au.com.anthonybruno.generator.format.Format;
+import au.com.anthonybruno.generator.format.Formatter;
 
 public class FormattedGenerator<T> implements Generator<String> {
 
     private final Generator<T> generator;
-    private final Format<T> format;
+    private final Formatter<T> formatter;
 
-    public FormattedGenerator(Generator<T> generator, Format<T> format) {
+    public FormattedGenerator(Generator<T> generator, Formatter<T> formatter) {
         this.generator = generator;
-        this.format = format;
+        this.formatter = formatter;
     }
 
     @Override
     public String generate() {
-        return format.format(generator.generate());
+        return formatter.format(generator.generate());
     }
 }

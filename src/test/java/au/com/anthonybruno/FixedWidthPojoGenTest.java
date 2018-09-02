@@ -1,5 +1,6 @@
 package au.com.anthonybruno;
 
+import au.com.anthonybruno.settings.FixedWidthField;
 import au.com.anthonybruno.settings.FixedWidthSettings;
 import com.univocity.parsers.fixed.FixedWidthFields;
 import com.univocity.parsers.fixed.FixedWidthParser;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertFalse;
 public class FixedWidthPojoGenTest {
 
     private final int rows = 5;
-    private final FixedWidthFields fixedWidthFields = new FixedWidthFields(20, 20, 40);
+    private final List<FixedWidthField> fields = FixedWidthField.create(20, 20, 40);
 
     @Test
     public void isNonEmpty() {
@@ -31,10 +32,7 @@ public class FixedWidthPojoGenTest {
     @Test
     public void isFixedWidth() {
         String result = generatePersonFixedWidth();
-
-        FixedWidthParserSettings settings = new FixedWidthParserSettings(fixedWidthFields);
-        FixedWidthParser fixedWidthParser = new FixedWidthParser(settings);
-
+        FixedWidthParser fixedWidthParser = createParser();
         List<String[]> parsedResult = fixedWidthParser.parseAll(new StringReader(result));
         assertEquals(5, parsedResult.size());
     }
@@ -43,13 +41,18 @@ public class FixedWidthPojoGenTest {
     @Test
     public void fixedWidthFile() {
         File file = generateFixedWidthFile();
-
-        FixedWidthParserSettings settings = new FixedWidthParserSettings(fixedWidthFields);
-        FixedWidthParser fixedWidthParser = new FixedWidthParser(settings);
-
+        FixedWidthParser fixedWidthParser = createParser();
         List<String[]> parsedResult = fixedWidthParser.parseAll(file);
         assertEquals(printRows(parsedResult), 5, parsedResult.size());
+    }
 
+    private FixedWidthParser createParser() {
+        FixedWidthFields fixedWidthFields = new FixedWidthFields();
+        fields.forEach(field -> {
+            fixedWidthFields.addField(field.getLength());
+        });
+        FixedWidthParserSettings settings = new FixedWidthParserSettings(fixedWidthFields);
+        return new FixedWidthParser(settings);
     }
 
     private String printRows(List<String[]> rows) {
@@ -63,7 +66,7 @@ public class FixedWidthPojoGenTest {
         return Gen.start()
                 .use(Person.class)
                 .generate(rows)
-                .asFixedWidth(new FixedWidthSettings(false, fixedWidthFields))
+                .asFixedWidth(new FixedWidthSettings(false, fields))
                 .toStringForm();
     }
 
@@ -78,7 +81,7 @@ public class FixedWidthPojoGenTest {
         return Gen.start()
                 .use(Person.class)
                 .generate(rows)
-                .asFixedWidth(new FixedWidthSettings(false, fixedWidthFields))
+                .asFixedWidth(new FixedWidthSettings(false, fields))
                 .toFile(file);
     }
 }

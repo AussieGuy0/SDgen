@@ -23,8 +23,8 @@ public class DefaultRecordSupplier implements RecordSupplier {
     }
 
     @Override
-    public Stream<Record> supplyRecords() {
-        return Stream.generate(recordSupplier);
+    public Stream<Record> supplyRecords(int numToGenerate) {
+        return Stream.generate(recordSupplier).limit(numToGenerate);
     }
 
 }

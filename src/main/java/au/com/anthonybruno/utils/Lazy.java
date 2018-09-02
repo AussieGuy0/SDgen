@@ -2,7 +2,7 @@ package au.com.anthonybruno.utils;
 
 import java.util.function.Supplier;
 
-public class Lazy<T> {
+public class Lazy<T> implements Supplier<T> {
 
     private final Supplier<T> supplier;
     private T value;
@@ -12,6 +12,7 @@ public class Lazy<T> {
         this.supplier = supplier;
     }
 
+    @Override
     public T get() {
         if (!hasCached) {
             value = this.supplier.get();

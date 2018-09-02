@@ -3,12 +3,11 @@ package au.com.anthonybruno.creator;
 import au.com.anthonybruno.record.RecordSupplier;
 import au.com.anthonybruno.record.factory.RecordFactory;
 import au.com.anthonybruno.settings.CsvSettings;
-import au.com.anthonybruno.writer.AbstractCsvWriter;
+import au.com.anthonybruno.utils.TextFile;
 import au.com.anthonybruno.writer.WriterFactory;
+import au.com.anthonybruno.writer.csv.AbstractCsvWriter;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.StringWriter;
 
 public class CsvFactory extends FlatFileFactory<CsvSettings> {
@@ -32,8 +31,7 @@ public class CsvFactory extends FlatFileFactory<CsvSettings> {
         if (settings.isIncludingHeaders()) {
             writer.writeRow(records.getFields());
         }
-        records.supplyRecords()
-                .limit(rowsToGenerate)
+        records.supplyRecords(rowsToGenerate)
                 .forEach(record -> {
                     writer.writeRecord(record);
                 });
@@ -41,13 +39,7 @@ public class CsvFactory extends FlatFileFactory<CsvSettings> {
 
     @Override
     public File createFile(File file, int rowsToGenerate) {
-        FileWriter fileWriter;
-        try {
-            fileWriter = new FileWriter(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try (AbstractCsvWriter csvWriter = WriterFactory.getDefaultCsvWriter(fileWriter, settings)) {
+        try (AbstractCsvWriter csvWriter = WriterFactory.getDefaultCsvWriter(new TextFile(file).getWriter(), settings)) {
             writeValues(csvWriter, rowsToGenerate);
         }
         return file;

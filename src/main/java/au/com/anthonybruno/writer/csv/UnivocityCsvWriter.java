@@ -1,4 +1,4 @@
-package au.com.anthonybruno.writer;
+package au.com.anthonybruno.writer.csv;
 
 import au.com.anthonybruno.record.Record;
 import au.com.anthonybruno.settings.CsvSettings;
@@ -31,7 +31,6 @@ public class UnivocityCsvWriter extends AbstractCsvWriter {
     @Override
     public void close() {
         csvWriter.close();
-
     }
 
     @Override

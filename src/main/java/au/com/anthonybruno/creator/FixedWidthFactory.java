@@ -3,8 +3,9 @@ package au.com.anthonybruno.creator;
 import au.com.anthonybruno.record.RecordSupplier;
 import au.com.anthonybruno.record.factory.RecordFactory;
 import au.com.anthonybruno.settings.FixedWidthSettings;
-import com.univocity.parsers.fixed.FixedWidthWriter;
-import com.univocity.parsers.fixed.FixedWidthWriterSettings;
+import au.com.anthonybruno.utils.TextFile;
+import au.com.anthonybruno.writer.WriterFactory;
+import au.com.anthonybruno.writer.fixedwidth.AbstractFixedWidthWriter;
 
 import java.io.File;
 import java.io.StringWriter;
@@ -17,36 +18,30 @@ public class FixedWidthFactory extends FlatFileFactory<FixedWidthSettings> {
 
     @Override
     public String createString(int numToGenerate) {
-        FixedWidthWriterSettings writerSettings = new FixedWidthWriterSettings(settings.getFixedWidthFields());
         StringWriter stringWriter = new StringWriter();
-        FixedWidthWriter fixedWidthWriter = new FixedWidthWriter(stringWriter, writerSettings);
-
-        generateAndWriteValues(fixedWidthWriter, numToGenerate);
+        try (AbstractFixedWidthWriter fixedWidthWriter = WriterFactory.getDefaultFixedWidthWriter(stringWriter, settings)) {
+            generateAndWriteValues(fixedWidthWriter, numToGenerate);
+        }
         return stringWriter.toString();
     }
 
 
-    private void generateAndWriteValues(FixedWidthWriter writer, int numToGenerate) {
+    private void generateAndWriteValues(AbstractFixedWidthWriter writer, int numToGenerate) {
         RecordSupplier recordSupplier = recordFactory.getRecordSupplier();
         if (settings.isIncludingHeaders()) {
-            recordSupplier.getFields().forEach(writer::addValue);
-            writer.writeValuesToRow();
+            writer.writeRow(recordSupplier.getFields());
         }
-        recordSupplier.supplyRecords()
-                .limit(numToGenerate)
+        recordSupplier.supplyRecords(numToGenerate)
                 .forEach(record -> {
-                    record.forEach(writer::addValue);
-                    writer.writeValuesToRow();
+                    writer.writeRecord(record);
                 });
-        writer.close();
     }
 
     @Override
     public File createFile(File file, int numToGenerate) {
-        FixedWidthWriterSettings writerSettings = new FixedWidthWriterSettings(settings.getFixedWidthFields());
-        FixedWidthWriter fixedWidthWriter = new FixedWidthWriter(file, writerSettings);
-
-        generateAndWriteValues(fixedWidthWriter, numToGenerate);
+        try (AbstractFixedWidthWriter fixedWidthWriter = WriterFactory.getDefaultFixedWidthWriter(new TextFile(file).getWriter(), settings)) {
+            generateAndWriteValues(fixedWidthWriter, numToGenerate);
+        }
         return file;
     }
 }
