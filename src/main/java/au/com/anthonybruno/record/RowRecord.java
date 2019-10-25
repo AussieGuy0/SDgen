@@ -1,6 +1,5 @@
 package au.com.anthonybruno.record;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +19,7 @@ public class RowRecord implements Record {
 
     @Override
     public Object get(String fieldName) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override

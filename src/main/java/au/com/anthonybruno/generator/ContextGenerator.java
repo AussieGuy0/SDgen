@@ -1,7 +1,7 @@
 package au.com.anthonybruno.generator;
 
 @FunctionalInterface
-public interface Generator<T> {
+public interface ContextGenerator<T> {
 
-    T generate();
+    T generate(Context context);
 }

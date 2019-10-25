@@ -4,17 +4,18 @@ import au.com.anthonybruno.creator.CsvFactory;
 import au.com.anthonybruno.creator.FileFactory;
 import au.com.anthonybruno.creator.FixedWidthFactory;
 import au.com.anthonybruno.definition.*;
+import au.com.anthonybruno.generator.ContextGenerator;
 import au.com.anthonybruno.generator.Generator;
 import au.com.anthonybruno.record.factory.ClassRecordFactory;
 import au.com.anthonybruno.record.factory.FieldsRecordFactory;
 import au.com.anthonybruno.record.factory.RecordFactory;
 import au.com.anthonybruno.settings.CsvSettings;
 import au.com.anthonybruno.settings.FixedWidthSettings;
-import au.com.anthonybruno.utils.ArgumentUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Gen implements FileTypeDefinition, ResultDefinition, StartDefinition, RecordDefinition, FieldDefinition {
 
@@ -22,7 +23,7 @@ public class Gen implements FileTypeDefinition, ResultDefinition, StartDefinitio
     private FileFactory fileFactory;
 
     private Class<?> useClass;
-    private List<FieldData> fields = new ArrayList<>();
+    private List<FieldGenerator<?>> fields = new ArrayList<>();
 
     public static StartDefinition start() {
         return new Gen();
@@ -41,8 +42,15 @@ public class Gen implements FileTypeDefinition, ResultDefinition, StartDefinitio
 
     @Override
     public FieldDefinition addField(String name, Generator generator) {
-        ArgumentUtils.isNotNull(generator, "Can not add '" + name + "' field with null generator");
-        fields.add(new FieldData(name, generator));
+        Objects.requireNonNull(generator, "Can not add '" + name + "' field with null generator");
+        fields.add(new FieldGenerator(name, generator));
+        return this;
+    }
+
+    @Override
+    public FieldDefinition addField(String name, ContextGenerator generator) {
+        Objects.requireNonNull(generator, "Can not add '" + name + "' field with null generator");
+        fields.add(new FieldGenerator(name, generator));
         return this;
     }
 

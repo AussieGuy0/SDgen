@@ -2,6 +2,7 @@ package au.com.anthonybruno;
 
 import au.com.anthonybruno.definition.RecordDefinition;
 import au.com.anthonybruno.definition.StartDefinition;
+import au.com.anthonybruno.generator.Generator;
 import au.com.anthonybruno.generator.defaults.IntGenerator;
 import au.com.anthonybruno.generator.defaults.StringGenerator;
 import au.com.anthonybruno.settings.CsvSettings;
@@ -41,13 +42,16 @@ public class AddFieldsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void addNullGenerator() {
-        Gen.start().addField("bad", null).generate(5).asCsv().toStringForm();
+        Generator generator = null;
+        Gen.start().addField("bad", generator).generate(5).asCsv().toStringForm();
     }
 
     @Test(expected = IllegalStateException.class)
     public void tryToGenerateNegativeRows() {
         Gen.start().addField("bad", new IntGenerator()).generate(-1).asCsv().toStringForm();
     }
+
+
 
     public String generateSingleFieldCsv() {
         return Gen.start()

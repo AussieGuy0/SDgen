@@ -1,65 +1,48 @@
 package au.com.anthonybruno;
 
-import au.com.anthonybruno.definition.RecordDefinition;
-import au.com.anthonybruno.definition.StartDefinition;
-import au.com.anthonybruno.generator.Generator;
-import au.com.anthonybruno.generator.defaults.IntGenerator;
-import au.com.anthonybruno.generator.defaults.StringGenerator;
-import au.com.anthonybruno.settings.CsvSettings;
+import com.github.javafaker.Faker;
 import org.junit.Test;
 
-import java.security.spec.RSAOtherPrimeInfo;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
-public class AddFieldsTest {
+public class ContextGeneratorTest {
 
     private final int rowsToGenerate = 5;
+    private final Faker faker = new Faker();
 
     @Test
-    public void generateSingleFieldNotEmpty() {
-        String result = generateSingleFieldCsv();
-        assertFalse(result.isEmpty());
+    public void worksLikeANormalGenerator() {
+        Faker faker = new Faker();
+        String result = Gen.start()
+                .addField("first_name", context -> faker.name().firstName())
+                .generate(5)
+                .asCsv()
+                .toStringForm();
+        assertEquals(6, result.split("\n").length);
     }
 
     @Test
-    public void generateSingleFieldsCorrectAmountOfRows() {
-        String result = generateSingleFieldCsv();
-        assertEquals(rowsToGenerate, result.split("\n").length);
-    }
-
-    @Test
-    public void generateLotsOfFields() {
-        StartDefinition fieldDefinition = Gen.start();
-        RecordDefinition recordDefinition = null;
-        for (int i = 0; i < 100; i++) {
-            recordDefinition = fieldDefinition.addField("Field " + i, new StringGenerator());
+    public void getFieldValueOfSingleField() {
+        String result = Gen.start()
+                .addField("full_name", context -> context.getFieldValue("first_name", String.class) + " Smith")
+                .addField("first_name", () -> faker.name().firstName())
+                .generate(5)
+                .asCsv()
+                .toStringForm();
+        for (String line : result.split("\n")) {
+            String[] values = line.split(",");
+            System.out.println(line);
         }
-        String result = recordDefinition.generate(1000).asCsv().toStringForm();
-
-        String firstLine = result.substring(0, result.indexOf("\n"));
-        assertEquals(100,  firstLine.split(",").length);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void addNullGenerator() {
-        Generator generator = null;
-        Gen.start().addField("bad", generator).generate(5).asCsv().toStringForm();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void tryToGenerateNegativeRows() {
-        Gen.start().addField("bad", new IntGenerator()).generate(-1).asCsv().toStringForm();
-    }
-
-
-
-    public String generateSingleFieldCsv() {
-        return Gen.start()
-                .addField("Name", new StringGenerator())
-                .generate(rowsToGenerate)
-                .asCsv(new CsvSettings(false))
+    @Test(expected = RuntimeException.class)
+    public void throwsErrorIfGetFieldValueOnNonExistentField() {
+         Gen.start()
+                .addField("full_name", context -> context.getFieldValue("first_name", String.class) + " Smith")
+                .generate(5)
+                .asCsv()
                 .toStringForm();
     }
+
+
 }
