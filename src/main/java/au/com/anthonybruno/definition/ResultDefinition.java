@@ -18,11 +18,9 @@ public interface ResultDefinition {
     File toFile(File file);
 
     /**
-     * Saves the generated date to a File specified by the path and returns it.
-     *
-     * @param path The directory path where the file will be saved
-     * @return a File containing the generated data
-     */
+     * Saves the generated date to a File specified by the path and returns it.*/
+    String file = System.getProperty("user.dir") + "/src/test/resources/csv";
+    
     File toFile(String path);
 
     /**
